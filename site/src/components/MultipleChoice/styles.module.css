@@ -1,0 +1,59 @@
+.option-inner-wrapper > * {
+  vertical-align: middle;
+}
+
+.wrapper {
+  margin-top: var(--my-checkpoint-content-margin);
+  margin-bottom: var(--my-checkpoint-content-margin);
+}
+
+.option-wrapper > .selected, .option-wrapper > .selected:hover {
+  background-color: var(--ifm-hover-overlay-highlight);
+}
+
+.option-wrapper > .option {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: var(--ifm-button-padding-vertical);
+  padding-right: var(--ifm-button-padding-vertical);
+  user-select: auto;
+  -moz-user-select: auto;
+  -khtml-user-select: auto;
+  -webkit-user-select: auto;
+  -o-user-select: auto;
+}
+
+.option-wrapper > .option p {
+  margin: 0px;
+}
+
+.result {
+  margin-top: var(--my-checkpoint-content-margin);
+  margin-bottom: var(--my-checkpoint-content-margin);
+}
+
+.correct-tag {
+  margin: 0.5rem 0px;
+}
+
+.correct-icon {
+  color: var(--ifm-color-success-dark);
+}
+
+[data-theme='dark']
+.correct-icon {
+  color: var(--ifm-color-success-light);
+}
+
+.incorrect-icon {
+  color: var(--ifm-color-danger-dark);
+}
+
+[data-theme='dark']
+.incorrect-icon {
+  color: var(--ifm-color-danger-light);
+}

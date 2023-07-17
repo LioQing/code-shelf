@@ -1,0 +1,8 @@
+{
+  "label": "Drafts",
+  "collapsible": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Here is a list of all the drafts in the system"
+  }
+}

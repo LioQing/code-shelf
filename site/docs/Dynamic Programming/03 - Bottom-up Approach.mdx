@@ -1,0 +1,337 @@
+---
+description: Introduction to The Bottom-up Approach in Dynamic Programming.
+---
+
+import VideoPlayer from '@site/src/components/VideoPlayer';
+
+<head>
+  <title>Bottom-up Approach | Dynamic Programming</title>
+</head>
+
+Compared to the top-down approach, generally recursion, the bottom-up approach reduces the overhead of function calls.
+It requires starting from base cases and working up the recursion tree, which can be transformed into an iterative solution to the problem easily.
+
+Given the benefits of the bottom-up approach, it is often the preferred approach in dynamic programming.
+
+## Starting From The Base Cases
+
+If we think about the recursion tree of a Fibonacci sequence problem, we can see that each $f(n)$ calls $f(n-1)$ and $f(n-2)$,
+until it reaches the base cases $f(0)$ and $f(1)$.
+
+Essentially, the recursive solution is going from top to bottom by function calls,
+and then going from bottom to top by returning values.
+
+<VideoPlayer
+    src='/video/dp/dp_03_01.mp4'
+    text='Recursion tree of Fibonacci sequence problem. Function calls are going from top to bottom, and then values are returned from bottom to top.'
+/> 
+
+Since we know the base cases, we can start from there and build up the solution to the problem. 
+
+For example, we can find $f(2)$ by adding $f(0)$ and $f(1)$, and then $f(3)$ by adding $f(1)$ and $f(2)$, and so on,
+until we reach the ultimate goal $f(n)$. This eliminates any function calls, and we can easily transform it into an iterative solution.
+
+<VideoPlayer
+    src='/video/dp/dp_03_02.mp4'
+    text='Building up the solution to the Fibonacci sequence problem from base cases.'
+/> 
+
+## Applying The Bottom-up Approach
+
+As we need to calculate next values based on the previous values, we use an array to store the values we have calculated so far.
+This is similar to memoization, except we don't need a null value in array or a hash table, because we know that the previous values must be 
+calculated before the next values.
+
+In the Fibonacci sequence problem, notice how the recurrence contains only one varying parameter $n$.
+
+$$
+f(n) = f(n-1) + f(n-2)
+$$
+
+This means that we only need a one-dimensional array to store the values, starting from $n = 0$ and $n = 1$.
+We can then calculate the next values by adding the previous two values in the array.
+
+```pseudocode title="n-th Fibonacci Number with Bottom-up Approach"
+// fibonacci function
+function fib(n: int) -> int:
+    // initialize memoization array
+    let dp = [...] of size n + 1
+    let dp[0] = 0
+    let dp[1] = 1
+
+    // calculate next values
+    for i from 2 to n:
+        dp[i] = dp[i - 1] + dp[i - 2]
+
+    return dp[n]
+```
+
+<VideoPlayer
+    src='/video/dp/dp_03_03.mp4'
+    text='Visualization of the bottom-up approach to the Fibonacci sequence problem.'
+/> 
+
+This approach gives us a time complexity of $O(n)$ and a space complexity of $O(n)$, which is the same as memoization, except we don't need recursive calls.
+
+### Space Optimization
+
+Since we only need the previous two values to calculate the next value, we can use two variables instead of an array to store the values.
+Note that there is an exceptional case for $f(0)$.
+
+```pseudocode title="n-th Fibonacci Number with Bottom-up Approach - Space Optimized"
+// fibonacci function
+function fib(n: int) -> int:
+    // initialize base cases
+    let prev = 0
+    let curr = 1
+
+    // exceptional case for fib(0)
+    if n == 0:
+        return prev
+
+    // calculate next values
+    for i from 2 to n:
+        let next = prev + curr
+        prev = curr
+        curr = next
+
+    return curr
+```
+
+<VideoPlayer
+    src='/video/dp/dp_03_04.mp4'
+    text='Visualization of the space optimized bottom-up approach to the Fibonacci sequence problem.'
+/> 
+
+This approach still gives us a time complexity of $O(n)$ but reduces the space complexity to $O(1)$.
+
+:::info Multiple Calls Optimization
+
+The non-space optimized approach uses an memoization array, it can also be optimized for multiple calls.
+However, the space optimized approach cannot be optimized for multiple calls, as it does not store all previous values.
+
+:::
+
+import MultipleChoice from '@site/src/components/MultipleChoice';
+
+:::checkpoint Checkpoint
+
+<MultipleChoice
+    options={[
+        'Solving the edge cases',
+        'Building up from base cases',
+        'Making recursive function calls',
+        'Iterating through all possible solutions'
+    ]}
+    answer={1}
+    explanation='
+    We start by building up from base cases to work towards the goal, iterating until we reach the goal.
+    This can eliminate the use of recusive functions, reducing overhead of function calls.'>
+
+In bottom-up approach, we start by doing what to work towards the goal?
+
+</MultipleChoice>
+
+:::
+
+## Impementation
+
+Both the non-space optimized and space optimized approaches are implemented below.
+They will be implemented for problems later on as well.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+In Python, we can almost directly translate the pseudocode into code.
+
+```python title="n-th Fibonacci Number with Bottom-up Approach"
+# fibonacci function
+def fib(n):
+    # initialize memoization list
+    dp = [0] * (n + 1)
+    dp[0] = 0
+    dp[1] = 1
+
+    # calculate next values
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+
+    return dp[n]
+
+# main function
+def main():
+    # gets input and prints the result
+    n = int(input())
+    print(fib(n))
+
+if __name__ == "__main__":
+    main()
+```
+
+```python title="n-th Fibonacci Number with Bottom-up Approach - Space Optimized"
+# fibonacci function
+def fib(n):
+    # initialize base cases
+    prev = 0
+    curr = 1
+
+    # exceptional case for fib(0)
+    if n == 0:
+        return prev
+
+    # calculate next values
+    for i in range(2, n + 1):
+        next = prev + curr
+        prev = curr
+        curr = next
+
+    return curr
+
+# main function
+def main():
+    # gets input and prints the result
+    n = int(input())
+    print(fib(n))
+
+if __name__ == "__main__":
+    main()
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+In C++, we can almost directly translate the pseudocode into code for bottom-up approach compared to memoization.
+
+```cpp title="n-th Fibonacci Number with Bottom-up Approach"
+#include <iostream>
+#include <vector>
+
+// fibonacci function
+int fib(int n) {
+    // initialize memoization vector
+    std::vector<int> dp(n + 1, 0);
+    dp[0] = 0;
+    dp[1] = 1;
+
+    // calculate next values
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    return dp[n];
+}
+
+// main function
+int main() {
+    // gets input and prints the result
+    int n;
+    std::cin >> n;
+    std::cout << fib(n) << std::endl;
+
+    return 0;
+}
+```
+
+```cpp title="n-th Fibonacci Number with Bottom-up Approach - Space Optimized"
+#include <iostream>
+
+// fibonacci function
+int fib(int n) {
+    // initialize base cases
+    int prev = 0;
+    int curr = 1;
+
+    // exceptional case for fib(0)
+    if (n == 0) {
+        return prev;
+    }
+
+    // calculate next values
+    for (int i = 2; i <= n; i++) {
+        int next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+
+    return curr;
+}
+
+// main function
+int main() {
+    // gets input and prints the result
+    int n;
+    std::cin >> n;
+    std::cout << fib(n) << std::endl;
+
+    return 0;
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+In Rust, we can almost directly translate the pseudocode into code for bottom-up approach compared to memoization.
+
+```rust title="n-th Fibonacci Number with Bottom-up Approach"
+// fibonacci function
+fn fib(n: usize) -> usize {
+    // initialize memoization vector
+    let mut dp = vec![0; n + 1];
+    dp[0] = 0;
+    dp[1] = 1;
+
+    // calculate next values
+    for i in 2..=n {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    dp[n]
+}
+
+// main function
+fn main() {
+    // prints the result for fib(7)
+    let n = 7;
+    println!("{}", fib(n));
+}
+```
+
+```rust title="n-th Fibonacci Number with Bottom-up Approach - Space Optimized"
+// fibonacci function
+fn fib(n: usize) -> usize {
+    // initialize base cases
+    let mut prev = 0;
+    let mut curr = 1;
+
+    // exceptional case for fib(0)
+    if n == 0 {
+        return prev;
+    }
+
+    // calculate next values
+    for _ in 2..=n {
+        let next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+
+    curr
+}
+
+// main function
+fn main() {
+    // prints the result for fib(7)
+    let n = 7;
+    println!("{}", fib(n));
+}
+```
+
+</TabItem>
+
+</Tabs>

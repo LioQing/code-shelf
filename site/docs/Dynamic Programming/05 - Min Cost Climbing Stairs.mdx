@@ -1,0 +1,309 @@
+---
+description: Solve the a modified version of the climbing stairs problem.
+---
+
+import VideoPlayer from '@site/src/components/VideoPlayer';
+
+<head>
+  <title>Min Cost Climbing Stairs | Dynamic Programming</title>
+</head>
+
+This is a problem modified from the climbing stairs problem, instead of 
+being a counting problem, it is now a minimization problem.
+
+## Problem Description
+
+From LeetCode: [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
+
+You are given an integer array `cost` where `cost[i]` is the cost of `ith` step on a staircase.
+Once you pay the cost, you can either climb one or two steps.
+
+You can either start from the step with index `0`, or the step with index `1`.
+
+Return the _minimum cost to reach the top of the floor_.
+
+Constraints:
+
+- `2 <= cost.length <= 1000`
+- `0 <= cost[i] <= 999`
+
+## Testcases
+
+```
+cost = [10,15,20]
+Output: 15
+```
+
+```
+cost = [1,100,1,1,1,100,1,1,100,1]
+Output: 6
+```
+
+---
+
+## Forming the Recurrence Relation
+
+At the $n$-th step, instead of focusing on the number of ways to reach the $n$-th step,
+we focus on the cost to reach the $n$-th step:
+
+1. With a cost of $\text{cost}[n-1]$, take $1$ step from the $(n-1)$-th step.
+2. With a cost of $\text{cost}[n-2]$, take $2$ steps from the $(n-2)$-th step.
+
+We see the subproblems is almost the same as the original climbing stairs problem,
+the only difference is the cost of taking the steps.
+
+Since we want to minimize the cost, we want to take which ever costs less.
+In other words, we want to take the minimum of the two costs.
+
+Let $f(n)$ be the minimum cost to reach the $n$-th step:
+
+$$
+f(n) = \min \begin{cases}
+f(n-1) + \text{cost}[n-1] \\
+f(n-2) + \text{cost}[n-2]
+\end{cases}
+$$
+
+:::info
+
+Instead of writing the relation in one line like in the previous chapters
+(e.g. $f(n) = f(n-1) + f(n-2)$), we will write it in multiple lines to make it
+clearer the number of subproblems in the relation in future chapters.
+
+:::
+
+As for the base cases, since we can start at index $0$ or $1$, both of their costs
+are $0$.
+
+$$
+\begin{aligned}
+f(0) &= 0 \\
+f(1) &= 0
+\end{aligned}
+$$
+
+## Solving the Problem
+
+We can solve the problem using the same approach as the original climbing stairs,
+the only difference is to use $\min$ instead of $+$ in the recurrence relation.
+
+In addition, the base cases can all be initialized to $0$ instead of specific values.
+
+```pseudocode title="Min Cost Climbing Stairs"
+function minCostClimbingStairs(cost: int[]) -> int:
+    // the problem size
+    let n = cost.length
+
+    // initialize memoization array
+    let dp = [...] of size n + 1, zero-based index, initialized to 0
+
+    // calculate next values
+    for i from 2 to n:
+        dp[i] = min(
+            dp[i - 1] + cost[i - 1],
+            dp[i - 2] + cost[i - 2],
+        )
+
+    return dp[n]
+```
+
+Time complexity: $O(n)$  
+Space complexity: $O(n)$
+
+***video***
+
+## Space Optimization
+
+Since the subproblems is the same as the original climbing stairs problem,
+we can optimize the space complexity to $O(1)$ in the same way, only storing
+the previous two values.
+
+```pseudocode title="Min Cost Climbing Stairs - Space Optimized"
+function minCostClimbingStairs(cost: int[]) -> int:
+    // the problem size
+    let n = cost.length
+
+    // initialize base cases
+    let prev = 0
+    let curr = 0
+
+    // calculate next values
+    for i from 2 to n:
+        let next = min(
+            curr + cost[i - 1],
+            prev + cost[i - 2],
+        )
+        prev = curr
+        curr = next
+
+    return curr
+```
+
+Time complexity: $O(n)$  
+Space complexity: $O(1)$
+
+***video***
+
+import MultipleChoice from '@site/src/components/MultipleChoice';
+
+:::checkpoint Checkpoint
+
+:::
+
+## Implementation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+```python title="Min Cost Climbing Stairs"
+def minCostClimbingStairs(cost):
+    # the problem size
+    n = len(cost)
+
+    # initialize memoization array
+    dp = [0] * (n + 1)
+
+    # calculate next values
+    for i in range(2, n + 1):
+        dp[i] = min(
+            dp[i - 1] + cost[i - 1],
+            dp[i - 2] + cost[i - 2],
+        )
+
+    return dp[n]
+```
+
+```python title="Min Cost Climbing Stairs - Space Optimized"
+def minCostClimbingStairs(cost):
+    # the problem size
+    n = len(cost)
+
+    # initialize base cases
+    prev = 0
+    curr = 0
+
+    # calculate next values
+    for i in range(2, n + 1):
+        next = min(
+            curr + cost[i - 1],
+            prev + cost[i - 2],
+        )
+        prev = curr
+        curr = next
+
+    return curr
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+Note that we do not need to check for index out of bound error like the 
+implementation for the original climbing stairs problem, since we can initialize
+the memoization vector with values of 0 all together.
+
+```cpp title="Min Cost Climbing Stairs"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int climbStairs(std::vector<int>& cost) {
+    // the problem size
+    int n = cost.size();
+
+    // initialize memoization vector
+    std::vector<int> dp(n + 1, 0);
+
+    // calculate next values
+    for (int i = 2; i <= n; i++) {
+        dp[i] = std::min(
+            dp[i - 1] + cost[i - 1],
+            dp[i - 2] + cost[i - 2]
+        );
+    }
+
+    return dp[n];
+}
+```
+
+```cpp title="Min Cost Climbing Stairs - Space Optimized"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int climbStairs(std::vector<int>& cost) {
+    // the problem size
+    int n = cost.size();
+
+    // initialize base cases
+    int prev = 0;
+    int curr = 0;
+
+    // calculate next values
+    for (int i = 2; i <= n; i++) {
+        int next = std::min(
+            curr + cost[i - 1],
+            prev + cost[i - 2]
+        );
+        prev = curr;
+        curr = next;
+    }
+
+    return curr;
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+```rust title="Min Cost Climbing Stairs"
+fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
+    // the problem size
+    let n = cost.len();
+
+    // initialize memoization vector
+    let mut dp = vec![0; n + 1];
+
+    // calculate next values
+    for i in 2..=n {
+        dp[i] = std::cmp::min(
+            dp[i - 1] + cost[i - 1],
+            dp[i - 2] + cost[i - 2],
+        );
+    }
+
+    dp[n]
+}
+```
+
+```rust title="Min Cost Climbing Stairs - Space Optimized"
+fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
+    // the problem size
+    let n = cost.len();
+
+    // initialize base cases
+    let mut prev = 0;
+    let mut curr = 0;
+
+    // calculate next values
+    for i in 2..=n {
+        let next = std::cmp::min(
+            curr + cost[i - 1],
+            prev + cost[i - 2],
+        );
+        prev = curr;
+        curr = next;
+    }
+
+    curr
+}
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,22 @@
+.correct {
+  color: var(--ifm-color-success-dark);
+}
+
+[data-theme='dark']
+.correct {
+  color: var(--ifm-color-success-light);
+}
+
+.incorrect {
+  color: var(--ifm-color-danger-dark);
+}
+
+[data-theme='dark']
+.incorrect {
+  color: var(--ifm-color-danger-light);
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+}

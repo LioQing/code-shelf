@@ -1,0 +1,18 @@
+.question {
+  margin-top: var(--my-checkpoint-content-margin);
+  margin-bottom: var(--my-checkpoint-content-margin);
+}
+
+.question input {
+  margin-top: 0.15rem;
+  margin-bottom: 0.15rem;
+}
+
+.correct-tag {
+  margin: 0px;
+}
+
+.result {
+  margin-top: var(--my-checkpoint-content-margin);
+  margin-bottom: var(--my-checkpoint-content-margin);
+}

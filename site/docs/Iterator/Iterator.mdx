@@ -1,0 +1,428 @@
+# Iterator
+
+## Introduction
+
+Iterator is an object to traverse through a container. It provides a way to access the container's elements while hiding its underlying representation and details of iteration.
+
+Instead of thinking about how to iterate through a container, such as indexing in arrays, pointers in linked lists, the user only need to think about what to do with each element through the use of iterators.
+
+### Operations
+
+import MultipleChoice from '@site/src/components/MultipleChoice';
+import FillInTheBlank from '@site/src/components/FillInTheBlank';
+import Blank from '@site/src/components/Blank';
+
+:::checkpoint Hi
+
+<MultipleChoice
+  options={['Option A', 'Option B', 'Option C is a very **long** long long long long long long long long long long long long loooong long loooong long long loong longg option']}
+  answer={1}
+  explanation='This is an explanation'>
+Hi this is a checkpoint question
+</MultipleChoice>
+
+:::
+
+:::checkpoint
+
+<FillInTheBlank explanation='This is an explanation'>
+This is a blank: <Blank answer={'Hello World'}/>, answer it with Hello World.
+  
+1 + 1 = <Blank answer={'2'}/>. Super long **long** long long long long long long long long long <Blank answer={'long'}/> long long loooooooooooong long long long long long sentence.
+</FillInTheBlank>
+
+:::
+
+:::danger Danger
+
+Test
+
+:::
+
+:::caution Caution
+
+Test
+
+:::
+
+:::info Info
+
+Test
+
+:::
+
+:::tip Tip
+
+Test
+
+:::
+
+The operations of an iterator are generally defined as:
+
+`next() -> element` returns the element and move on to next element in the container. So the next time the function is called, it returns the next element, and so on.
+
+`has_next() -> bool` returns whether there is a next element.
+
+### Visualization
+
+import VideoPlayer from '@site/src/components/VideoPlayer';
+
+<VideoPlayer src='/animations/Iterator/manim/media/videos/visualization/1080p60/Visualization.mp4' />
+
+Take array and linked list as examples, they are both sequentially ordered containers, but their implementations are different. While iterating through their elements gives the same result, the implementation details are different. 
+
+However, with iterators, the iteration process can appear to be the same by simply accessing the next element through `next` and checking whether there is a next element through `has_next`.
+
+## Implementations
+
+### Array Iterator
+
+An array iterator can be implemented by storing a pointer or index to the current element and incrementing it by one each time `next` is called. 
+
+For `has_next` to be implemented, we can store the address of the end or the size of the array, and compare it with the current pointer or index.
+
+### Linked List Iterator
+
+A linked list iterator can be implemented by storing the current node and moving to the next node each time `next` is called.
+
+For `has_next` to be implemented, we check whether the next node is `null`, or other methods depending on the implementation of the linked list.
+
+### Other Iterators
+
+Other iterators can be implemented in a similar way as ordinary loops. Only difference is the variable used to obtain the current and next element is hidden inside the iterator, and is modified through `next`.
+
+## Applications
+
+### Generalized `for` Loop
+
+Iterators can be used to provide a common interface for objects that are containers, such as arrays, linked lists, trees, etc.
+
+```clike title='Pseudocode of a while loop using iterators'
+let iterator = container.get_iterator()
+while iterator.has_next() {
+    let element = iterator.next();
+    // do something with element
+}
+```
+
+Many languages implement a generalized `for` loop that simplify the process of iterating through a container by hiding the iterator from the user. It is a syntactical sugar for the `while` loop above.
+
+```clike title='Pseudocode of a generalized for loop'
+for element in container {
+    // do something with element
+}
+```
+
+### Higher-Order Functions
+
+Higher-order functions, such as `map`, `filter`, `reduce`, are implemented using iterators. They take in an iterator and a function, and return a new iterator or the result with the function applied to each element. They only expose the necessary interface and logics to the user, allowing for easy composition of functions.
+
+```clike title='Pseudocode of a filter and map function'
+// original: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+let iter = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].get_iterator()
+
+// filtered: [1, 3, 5, 7, 9]
+let filtered_iter = filter(iter, element => element is odd)
+
+// mapped: [2, 6, 10, 14, 18]
+let mapped_iter = map(filtered_iter, element => element * 2)
+
+// prints: 2 6 10 14 18
+for_each(mapped_iter, element => print(element))
+```
+
+The higher-order function `filter` in the example above first filters the array so only elements that are odd are processed. Then the higher-order function `map` multiplies each element by 2. At last the higher-order function `for_each` prints each element by calling `print` on them.
+
+The example above should prints `2 6 10 14 18`.
+
+```clike title='A for loop equivalent to the example above'
+for element in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].get_iterator():
+    // filter
+    if element is not odd: continue
+
+    // map
+    let element = element * 2
+
+    // for_each
+    print(element)
+```
+## Language-specific Implementations
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value='python' label='Python' default>
+
+In Python, the iterator pattern consists of iterable and iterators, with the built-in functions `iter` and `next`.
+
+#### Iterable
+
+An iterable has an `__iter__` method that returns an iterator, which is used by the built-in function `iter` to take in the iterable and returns its iterator.
+
+`__iter__(self)` returns an iterator of self.
+
+`iter(iterable)` returns an iterator of iterable.
+
+#### Iterator
+
+An iterator has a `__next__` method that returns the next element in the iterable, which is used by the built-in function `next` to take in the iterator and returns the next element.
+
+`__next__(self)` returns the next element in the iterable.
+
+`next(iterator)` returns the next element in the iterable, if there is no next element, raise `StopIteration`.
+
+`next(iterator, default)` returns the next element in the iterable, if there is no next element, return default.
+
+#### Examples
+
+```python title='An implementation of iterable and iterator'
+class Iterable:
+    def __init__(self, data):
+        self.data = data
+
+    def __iter__(self):
+        return Iterator(self.iterable)
+
+
+class Iterator:
+    def __init__(self, iterable):
+        self.iterable = iterable
+        self.index = 0
+
+    def __next__(self):
+        if self.index < len(self.iterable):
+            element = self.iterable[self.index]
+            self.index += 1
+            return element
+        else:
+            raise StopIteration
+```
+
+```python title='A while loop to print all elements in an iterable:'
+iterable = Iterable([1, 2, 3])
+iterator = iter(iterable)
+while True:
+    try:
+        element = next(iterator)
+        print(element)
+    except StopIteration:
+        break
+```
+
+```python title='A for loop to print all elements in an iterable'
+for element in Iterable([1, 2, 3]):
+    print(element)
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++' default>
+
+In C++, the iterator pattern consists of classes and functions from the iterator library of the STL of the standard library.
+
+#### `begin` and `end`
+
+In C++ iterators do not have information of when the iteration ends, so the `begin` and `end` functions are used to return iterators indicating the start and end of the iteration.
+
+`Iter begin(Container)` returns an iterator to the start of the container.
+
+`Iter end(Container)` returns an iterator to the end of the container.
+
+Most STL classes, such as `std::vector`, also have their own `begin` and `end` member functions.
+
+`Iter Container::begin()` returns an iterator to the start of the container.
+
+`Iter Container::end()` returns an iterator to the end of the container.
+
+There are also `rbegin` and `rend` functions and member functions that return reverse iterators. There are also `cbegin`, `cend`, `crbegin`, and `crend` functions and member functions that return constant iterators.
+
+#### Iterator Categories
+
+There are five categories of iterators in C++11: input, output, forward, bidirectional, and random access.
+
+There is also a sixth category of iterators in C++17: contiguous.
+
+#### Implementing a Forward Iterator
+
+Iterators in C++ are generalization of pointers, so their syntax are similar. This includes dereferencing operators, increment operators, and comparison operators, which are the minimal requirements for a forward iterator.
+
+`Elem& operator*()` returns a reference to the element the iterator is pointing to.
+
+`Iter& operator++()` is the prefix increment operator that moves the iterator to the next element and returns the iterator.
+
+`Iter operator++(int)` is the postfix increment operator that moves the iterator to the next element and returns the iterator before the increment.
+
+`bool operator==(Iter, Iter)` returns whether two iterators are pointing to the same element.
+
+`bool operator!=(Iter, Iter)` returns whether two iterators are not pointing to the same element.
+
+#### Examples
+
+```cpp title='An implementation of a container and its forward iterator'
+class Container {
+public:
+    class Iterator {
+    public:
+        Iterator(int* ptr) : ptr(ptr) { }
+
+        int& operator*() {
+            return *ptr;
+        }
+
+        Iterator& operator++() {
+            ++ptr;
+            return *this;
+        }
+
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++ptr;
+            return temp;
+        }
+
+        friend bool operator==(const Iterator& a, const Iterator& b) {
+            return a.ptr == b.ptr;
+        }
+
+        friend bool operator!=(const Iterator& a, const Iterator& b) {
+            return a.ptr != b.ptr;
+        }
+
+    private:
+        int* ptr;
+    };
+
+    Container(std::initializer_list<int> list) : data(list) {}
+
+    Iterator begin() {
+        return Iterator(data.data());
+    }
+
+    Iterator end() {
+        return Iterator(data.data() + data.size());
+    }
+
+private:
+    std::vector<int> data;
+};
+```
+
+```cpp title='A traditional for loop to print all elements in a container'
+Container container = {1, 2, 3};
+for (Container::Iterator it = container.begin(); it != container.end(); ++it) {
+    std::cout << *it << std::endl;
+}
+```
+
+```cpp title='A range-based for loop to print all elements in a container'
+for (int element : Container({1, 2, 3})) {
+    std::cout << element << std::endl;
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust' default>
+
+In Rust, the iterator pattern consists of the `Iterator` trait and the `iter` methods.
+
+#### Creating an Iterator
+
+Many Rust collections have methods that returns an iterator of the collection, there are 3 common methods.
+
+`iter(&self) -> Iter` returns an iterator of the collection, iterates over `&T`.
+
+`iter_mut(&mut self) -> Iter` returns an iterator of the collection, iterates over `&mut T`.
+
+`into_iter(self) -> Iter` returns an iterator of the collection, iterates over `T`.
+
+#### `Iterator` Trait
+
+The `Iterator` trait is the trait that all iterators implement. It has an `Item` associated type that is the type of the elements in the iterator. It also has an `next` method that returns the next element in the iterator.
+
+`type Item` is the type of the elements in the iterator.
+
+`next(&mut self) -> Option<Self::Item>` returns the next element in the iterator, returns `None` if there is no next element.
+
+#### Examples
+
+:::note Mutable Iterator
+
+Mutable iterators are not included in the example because they are not able to be implemented using safe Rust.
+
+:::
+
+```rust title='An implementation of a container and its iterator'
+struct Container {
+    data: Vec<i32>,
+}
+
+impl Container {
+    fn new(data: Vec<i32>) -> Container {
+        Container { data }
+    }
+
+    fn iter(&self) -> Iter {
+        Iter {
+            container: self,
+            index: 0,
+        }
+    }
+
+    fn into_iter(self) -> IntoIter {
+        IntoIter {
+            container: self,
+            index: 0,
+        }
+    }
+}
+
+struct Iter<'a> {
+    container: &'a Container,
+    index: usize,
+}
+
+impl<'a> Iterator for Iter<'a> {
+    type Item = &'a i32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.index < self.container.data.len() {
+            let element = &self.container.data[self.index];
+            self.index += 1;
+            Some(element)
+        } else {
+            None
+        }
+    }
+}
+
+struct IntoIter {
+    container: Container,
+    index: usize,
+}
+
+impl Iterator for IntoIter {
+    type Item = i32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.index < self.container.data.len() {
+            let element = self.container.data[self.index];
+            self.index += 1;
+            Some(element)
+        } else {
+            None
+        }
+    }
+}
+```
+
+```rust title='A for loop to print all elements in a container'
+let container = Container::new(vec![1, 2, 3]);
+for element in container.iter() {
+    println!("{}", element);
+}
+```
+
+</TabItem>
+</Tabs>

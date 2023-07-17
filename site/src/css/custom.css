@@ -1,0 +1,72 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@font-face {
+  font-family: "JetBrains Mono Regular";
+  src: url('/font/JetBrainsMono-Regular.ttf') format('ttf');
+}
+
+article {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.katex-html {
+  margin: var(--my-multimedia-content-margin) 0px;
+}
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2a735e;
+  --ifm-color-primary-dark: #266855;
+  --ifm-color-primary-darker: #246250;
+  --ifm-color-primary-darkest: #1d5142;
+  --ifm-color-primary-light: #2e7f67;
+  --ifm-color-primary-lighter: #30846c;
+  --ifm-color-primary-lightest: #37957a;
+  --ifm-code-font-size: 16px;
+  --ifm-font-size-base: 18px;
+  --ifm-font-family-monospace: "JetBrains Mono Regular";
+  --ifm-hover-overlay-highlight: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --my-negative-overlay: rgba(255, 255, 255, 0.1);
+  --my-negative-overlay-highlight: rgba(255, 255, 255, 0.2);
+  --my-checkpoint-content-margin: 1em;
+  --my-video-text-font-size: 0.8rem;
+  --my-multimedia-content-margin: 2rem;
+}
+
+.alert--primary {
+  --ifm-alert-background-color: #def7f1;
+  --ifm-alert-background-color-highlight: #f6faf9;
+  --ifm-alert-foreground-color: #0B241D;
+  --ifm-alert-border-color: var(--ifm-color-primary-dark);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #6cf5cf;
+  --ifm-color-primary-dark: #4bf3c4;
+  --ifm-color-primary-darker: #3af2bf;
+  --ifm-color-primary-darkest: #10e7ac;
+  --ifm-color-primary-light: #8df7da;
+  --ifm-color-primary-lighter: #9ef8df;
+  --ifm-color-primary-lightest: #cffcef;
+  --ifm-hover-overlay-highlight: rgba(255, 255, 255, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --my-negative-overlay: rgba(0, 0, 0, 0.1);
+  --my-negative-overlay-highlight: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark']
+.alert--primary {
+  --ifm-alert-background-color: #13423B;
+  --ifm-alert-background-color-highlight: #154A42;
+  --ifm-alert-foreground-color: #c1e7e6;
+}

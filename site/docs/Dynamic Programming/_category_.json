@@ -1,0 +1,8 @@
+{
+  "label": "Dynamic Programming",
+  "collapsible": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn dynamic programming to save time and space!"
+  }
+}

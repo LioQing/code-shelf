@@ -1,0 +1,348 @@
+---
+description: Introduction to Memoization in Dynamic Programming.
+---
+
+import VideoPlayer from '@site/src/components/VideoPlayer';
+
+<head>
+  <title>Memoization | Dynamic Programming</title>
+</head>
+
+As the name suggests, memoization is a technique to take memo of the results to reduce computation.
+This is particularly useful because of the overlapping subproblems in dynamic programming.
+
+## Overlapping Subproblems in Fibonacci Sequence
+
+In Fibonacci sequence, if we try to expand the larger of the two terms of the $n$-th Fibonacci number,
+we will see that $f(n - 2)$ is used twice.
+
+$$
+\begin{aligned}
+f(n) &= f(n - 1) + f(n - 2) \\
+&= \underline{f(n - 2)} + f(n - 3) + \underline{f(n - 2)}
+\end{aligned}
+$$
+
+Because the recursion tree of the Fibonacci sequence problem is a binary tree,
+the number of recursive calls is $O(2^n)$, which is exponential.
+So as $n$ grows, the number of overlapping subproblems and thus repeated computation also grows exponentially.
+
+<VideoPlayer
+    src='/video/dp/dp_02_01.mp4'
+    text='Time complexity grows with O(2ⁿ). Yellow nodes represent repeated computation on overlapping subproblems.'
+/> 
+
+An exponential growth in time complexity is really bad, so we need to find a way to optimize it,
+and memoization is one of the ways to do so.
+
+## Applying Memoization
+
+As mentioned before, memoization is simply making memo of the results.
+In other words, we can store the results in memory when we first compute it, and use it when we need it again.
+This is generally done by using an array or a hash table.
+
+For an implementation in the Fibonacci sequence problem, we will use an array $\text{dp}$ to store the results.
+
+We will first check whether we have already stored the result in $\text{dp}$ before doing any computation,
+and if we have, we will simply return the result. Otherwise, compute the result and store it in $\text{dp}$.
+
+```pseudocode title="n-th Fibonacci Number with Memoization"
+// initialize the memoization array
+let dp = [null, null, ..., null] of size n + 1
+let dp[0] = 0
+let dp[1] = 1
+
+// fibonacci function
+function fib(n: int) -> int:
+    // check if we have the memoized result
+    if dp[n] is not null: return dp[n]
+
+    // compute the result
+    dp[n] = fib(n - 1) + fib(n - 2)
+    return dp[n]
+```
+
+If we try to visualize the recursion tree of the above algorithm, we can see that it only has $n$ nodes,
+and each subproblem is only computed once. This reduces the time complexity to only $O(n)$.
+
+<VideoPlayer
+    src='/video/dp/dp_02_02.mp4'
+    text='Time complexity grows with O(n). The repeated computations are eliminated by directly taking stored results in `dp`.'
+/> 
+
+### Multiple Calls Optimization
+
+In the previous implementation, we assumed only one call to the function with a known $n$.
+
+If we want to call the function multiple times, e.g. $f(7)$, then $f(13)$, then $f(10)$,
+we will recompute the results of $f(0)$ to $f(7)$ three times in total.
+This is because we reinitialized $\text{dp}$ to all nulls every time we run the algorithm.
+
+To further optimize this, we make $\text{dp}$ an array shared by all calls to the function and grow the array as needed,
+which reduces the average time complexity of the solution if multiple calls are made.
+
+```pseudocode title="n-th Fibonacci Number with Memoization - Additional Optimization"
+// initialize the memoization array
+let dp = [0, 1]
+
+// fibonacci function
+function fib(n: int) -> int:
+    // grow the array if needed
+    if dp.length <= n: dp.resize(n + 1, filled with null)
+
+    // check if we have the memoized result
+    if dp[n] is not null: return dp[n]
+
+    // compute the result
+    dp[n] = fib(n - 1) + fib(n - 2)
+    return dp[n]
+```
+
+import MultipleChoice from '@site/src/components/MultipleChoice';
+
+:::checkpoint Checkpoint
+
+<MultipleChoice
+    options={[
+        "Mathematical expressions",
+        "Function calls",
+        "Memory space",
+        "Global variables",
+    ]}
+    answer={2}
+    explanation='
+    Extra memory space is used to store the result of overlapping subproblems, which can be a global or local variable.
+    It reduces the number of function calls on subproblems.'>
+
+In memoization, we can make extra use of what to reduce the number of computations on overlapping subproblems?
+
+</MultipleChoice>
+
+:::
+
+## Implementation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+In Python, the implementation is almost the same as the pseudocode above, 
+so it can be easily implemented as follows.
+
+```python title="n-th Fibonacci Number with Memoization"
+# initialize the memoization list
+dp = [0, 1]
+
+# fibonacci function
+def fib(n):
+    # grow the list if needed
+    if len(dp) <= n:
+        dp.extend([None] * (n + 1 - len(dp)))
+        
+    # check if we have the memoized result
+    if dp[n] is not None:
+        return dp[n]
+
+    # compute the result
+    dp[n] = fib(n - 1) + fib(n - 2)
+    return dp[n]
+
+# main function
+def main():
+    # gets input and prints the result
+    n = int(input())
+    print(fib(n))
+
+if __name__ == "__main__":
+    main()
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+In C++, there are a lot of ways to implement memoization for the Fibonacci sequence problem.
+In a more simple implementation, we can represent null by a special value, such as $-1$,
+and use a global vector to store the results.
+
+```cpp title="n-th Fibonacci Number with Memoization - Simple Implementation"
+#include <iostream>
+#include <vector>
+
+// initialize the memoization vector
+std::vector<int> dp = { 0, 1 };
+
+// fibonacci function
+int fib(int n) {
+    // grow the vector if needed
+    if (dp.size() <= n) {
+        dp.resize(n + 1, -1);
+    }
+
+    // check if we have the memoized result
+    if (dp[n] != -1) {
+        return dp[n];
+    }
+
+    // compute the result
+    dp[n] = fib(n - 1) + fib(n - 2);
+    return dp[n];
+}
+
+// main function
+int main() {
+    // gets input and prints the result
+    int n;
+    std::cin >> n;
+    std::cout << fib(n) << std::endl;
+
+    return 0;
+}
+```
+
+However, this implementation has some drawbacks:
+1. Using a global variable is not a good practice, we should instead encapsulate the memoization vector.
+    - We can use a class.
+    - We can also use a static variable inside the function, which is what we are going to use in the following example.
+2. This is less important, but instead of using $-1$ to represent a null value, we can use the `std::optional` class introduced in C++17.
+    - This also allows us to use unsigned integers, which is more appropriate for the problem.
+
+```cpp title="n-th Fibonacci Number with Memoization - Better Implementation"
+#include <iostream>
+#include <vector>
+#include <optional>
+
+// fibonacci function
+std::size_t fib(std::size_t n) {
+    // initialize the memoization vector
+    static std::vector<std::optional<std::size_t>> dp = { 0, 1 };
+
+    // grow the vector if needed
+    if (dp.size() <= n) {
+        dp.resize(n + 1, std::nullopt);
+    }
+
+    // check if we have the memoized result
+    if (dp[n].has_value()) {
+        return dp[n].value();
+    }
+
+    // compute the result
+    dp[n] = fib(n - 1) + fib(n - 2);
+    return dp[n].value();
+}
+
+// main function
+int main() {
+    // gets input and prints the result
+    std::size_t n;
+    std::cin >> n;
+    std::cout << fib(n) << std::endl;
+
+    return 0;
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+In Rust, due to the ownership system, we cannot use a static variable to store the memoization vector.
+We can use a struct instead.
+
+```rust title="n-th Fibonacci Number with Memoization - No Global Variable"
+// Fib struct
+struct Fib {
+    dp: Vec<Option<usize>>,
+}
+
+// implementation for Fib struct
+impl Fib {
+    // initialize the memoization vector
+    pub fn new() -> Self {
+        Self {
+            dp: vec![Some(0), Some(1)],
+        }
+    }
+
+    // fibonacci function
+    pub fn fib(&mut self, n: usize) -> usize {
+        // grow the array if needed
+        if self.dp.len() <= n {
+            self.dp.resize(n + 1, None);
+        }
+
+        // check if we have the memoized result
+        match self.dp[n] {
+            Some(x) => x,
+            None => {
+                //compute the result
+                self.dp[n] = Some(self.fib(n - 1) + self.fib(n - 2));
+                self.dp[n].unwrap()
+            }
+        }
+    }
+}
+
+// main function
+fn main() {
+    // prints the result for fib(7)
+    let n = 7;
+    let mut fib = Fib::new();
+    println!("{}", fib.fib(n));
+}
+```
+
+However, the caller may initialize multiple instance of `Fib`, which is not very good.
+In the example below, we will use the `lazy_static` crate and the `Mutex` class to initialize the static memoization vector, as a singleton.
+
+:::info Ownership & Singleton Pattern in Rust
+
+Because of the ownership system in Rust, we cannot make a singleton easily. There are crates like `lazy_static` allowing us to initialize 
+a static variable at run-time, but it is still not possible to mutate the variable. We can use `Mutex` to provide single-thread access to
+the singleton, and there are other ways to provide multi-thread access such as `RwLock`.
+
+:::
+
+```rust title="n-th Fibonacci Number with Memoization - With Static Variable"
+use std::sync::Mutex;
+use lazy_static::lazy_static;
+
+// initialize the memoization vector
+lazy_static! {
+    static ref DP: Mutex<Vec<Option<usize>>> = Mutex::new(vec![Some(0), Some(1)]);
+}
+
+// fibonacci function
+fn fib(n: usize) -> usize {
+    // grow the vector if needed
+    if DP.lock().unwrap().len() <= n {
+        DP.lock().unwrap().resize(n + 1, None);
+    }
+
+    // check if we have the memoized result
+    let x = DP.lock().unwrap()[n].clone();
+    match x {
+        Some(x) => x,
+        None => {
+            //compute the result
+            DP.lock().unwrap()[n] = Some(fib(n - 1) + fib(n - 2));
+            DP.lock().unwrap()[n].unwrap()
+        }
+    }
+}
+
+// main function
+fn main() {
+    // prints the result for fib(7)
+    let n = 7;
+    println!("{}", fib(n));
+}
+```
+
+</TabItem>
+
+</Tabs>

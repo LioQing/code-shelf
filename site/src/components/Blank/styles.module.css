@@ -1,0 +1,33 @@
+.wrapper {
+  display: inline;
+  position: relative;
+  box-sizing: border-box
+}
+
+.blank {
+  width: 200px;
+  box-sizing: border-box;
+  outline: none;
+  border-style: none;
+  border-radius: var(--ifm-alert-border-radius);
+  color: var(--ifm-alert-foreground-color);
+  background-color: var(--my-negative-overlay);
+  box-shadow: inset var(--ifm-global-shadow-lw);
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.blank:active {
+  border-style: none;
+}
+
+.checked {
+  padding-right: 2rem; /* 0.5rem (padding) + 1.5rem (width of icon) */
+}
+
+.icon {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.775rem; /* 0.15rem (margin) + 0.125rem (padding) + 0.5rem (half of font) */
+  transform: translateY(-50%);
+}

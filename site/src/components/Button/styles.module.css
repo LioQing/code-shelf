@@ -1,0 +1,21 @@
+.button {
+  display: inline;
+  border-style: none;
+  border-radius: var(--ifm-alert-border-radius);
+  background-color: var(--ifm-hover-overlay);
+  box-shadow: var(--ifm-global-shadow-lw);
+  cursor: pointer;
+  padding-top: var(--ifm-button-padding-vertical);
+  padding-bottom: var(--ifm-button-padding-vertical);
+  padding-left: var(--ifm-button-padding-horizontal);
+  padding-right: var(--ifm-button-padding-horizontal);
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.button:active {
+  background-color: var(--ifm-hover-overlay-highlight);
+}
