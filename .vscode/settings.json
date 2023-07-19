@@ -2,4 +2,10 @@
     "[css][javascript][javascriptreact][typescript][typescriptreact]": {
         "editor.tabSize": 2
     },
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "none",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    }, // optional
 }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './styles.module.css';
-import {BlankProps} from '@site/src/components/Blank';
-import Button from '@site/src/components/Button';
+import {BlankProps} from '@site/src/components/utils/Blank';
+import Button from '@site/src/components/utils/Button';
 
 interface FillInTheBlankProps {
   explanation: string;

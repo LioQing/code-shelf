@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './styles.module.css';
-import Button from '@site/src/components/Button';
-import CorrectIcon from '@site/src/components/CorrectIcon';
+import Button from '@site/src/components/utils/Button';
+import CorrectIcon from '@site/src/components/utils/CorrectIcon';
 
 interface OptionProps {
   option: string;

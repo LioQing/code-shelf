@@ -2,7 +2,7 @@
 description: Introduction to The Bottom-up Approach in Dynamic Programming.
 ---
 
-import VideoPlayer from '@site/src/components/VideoPlayer';
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
   <title>Bottom-up Approach | Dynamic Programming</title>
@@ -22,7 +22,7 @@ Essentially, the recursive solution is going from top to bottom by function call
 and then going from bottom to top by returning values.
 
 <VideoPlayer
-    src='/video/dp/dp_03_01.mp4'
+    src={require('/video/dp/dp_03_01.mp4').default}
     text='Recursion tree of Fibonacci sequence problem. Function calls are going from top to bottom, and then values are returned from bottom to top.'
 /> 
 
@@ -32,7 +32,7 @@ For example, we can find $f(2)$ by adding $f(0)$ and $f(1)$, and then $f(3)$ by 
 until we reach the ultimate goal $f(n)$. This eliminates any function calls, and we can easily transform it into an iterative solution.
 
 <VideoPlayer
-    src='/video/dp/dp_03_02.mp4'
+    src={require('/video/dp/dp_03_02.mp4').default}
     text='Building up the solution to the Fibonacci sequence problem from base cases.'
 /> 
 
@@ -67,7 +67,7 @@ function fib(n: int) -> int:
 ```
 
 <VideoPlayer
-    src='/video/dp/dp_03_03.mp4'
+    src={require('/video/dp/dp_03_03.mp4').default}
     text='Visualization of the bottom-up approach to the Fibonacci sequence problem.'
 /> 
 
@@ -99,7 +99,7 @@ function fib(n: int) -> int:
 ```
 
 <VideoPlayer
-    src='/video/dp/dp_03_04.mp4'
+    src={require('/video/dp/dp_03_04.mp4').default}
     text='Visualization of the space optimized bottom-up approach to the Fibonacci sequence problem.'
 /> 
 
@@ -112,7 +112,7 @@ However, the space optimized approach cannot be optimized for multiple calls, as
 
 :::
 
-import MultipleChoice from '@site/src/components/MultipleChoice';
+import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
 :::checkpoint Checkpoint
 

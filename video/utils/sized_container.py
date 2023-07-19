@@ -4,8 +4,8 @@ import manim
 class SizedContainer(manim.VGroup):
     def __init__(
             self,
-            width: int,
-            height: int,
+            width: float,
+            height: float,
             mobject: manim.VMobject,
             show_outline: bool = False,
             **kwargs

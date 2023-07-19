@@ -2,7 +2,7 @@
 description: An Overview of Dynamic Programming.
 ---
 
-import VideoPlayer from '@site/src/components/VideoPlayer';
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
   <title>Introduction | Dynamic Programming</title>
@@ -71,7 +71,7 @@ If instead we have the wrong values for a subproblem, let's say the $f(1)$ under
 then we will obtain the wrong value $f(3) = 1$ and leading to the wrong value $f(4) = 2$.
 
 <VideoPlayer
-    src='/video/dp/dp_01_01.mp4'
+    src={require('/video/dp/dp_01_01.mp4').default}
     text='Optimal substructure shown in f(4). Wrong value for f(1) leading to wrong value for f(4).'
 /> 
 
@@ -95,7 +95,7 @@ the overhead of repeating the same computation will become significant.
 For example, the computation $f(100)$ will repeat $f(2)$ 4181 times.
 
 <VideoPlayer
-    src='/video/dp/dp_01_02.mp4'
+    src={require('/video/dp/dp_01_02.mp4').default}
     text='Overlapping subproblems shown in f(5). Same subproblems are colored in the same color. Many subproblems are repeated.'
 />
 

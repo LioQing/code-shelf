@@ -2,7 +2,7 @@
 description: Introduction to Memoization in Dynamic Programming.
 ---
 
-import VideoPlayer from '@site/src/components/VideoPlayer';
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
   <title>Memoization | Dynamic Programming</title>
@@ -28,7 +28,7 @@ the number of recursive calls is $O(2^n)$, which is exponential.
 So as $n$ grows, the number of overlapping subproblems and thus repeated computation also grows exponentially.
 
 <VideoPlayer
-    src='/video/dp/dp_02_01.mp4'
+    src={require('/video/dp/dp_02_01.mp4').default}
     text='Time complexity grows with O(2ⁿ). Yellow nodes represent repeated computation on overlapping subproblems.'
 /> 
 
@@ -66,7 +66,7 @@ If we try to visualize the recursion tree of the above algorithm, we can see tha
 and each subproblem is only computed once. This reduces the time complexity to only $O(n)$.
 
 <VideoPlayer
-    src='/video/dp/dp_02_02.mp4'
+    src={require('/video/dp/dp_02_02.mp4').default}
     text='Time complexity grows with O(n). The repeated computations are eliminated by directly taking stored results in `dp`.'
 /> 
 
@@ -98,7 +98,7 @@ function fib(n: int) -> int:
     return dp[n]
 ```
 
-import MultipleChoice from '@site/src/components/MultipleChoice';
+import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
 :::checkpoint Checkpoint
 
