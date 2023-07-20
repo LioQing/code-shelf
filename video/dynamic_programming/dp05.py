@@ -14,18 +14,26 @@ from utils.sized_container import SizedContainer
 
 
 class dp_05_01(manim.Scene):
+    ADD_BUFF = 1.2
+
     def construct(self):
         # Initialize table from 1 to 8 representing f(1) to f(8)
         table = manim.MathTable(
             [
                 ["0", "0", "1", "5", "2", "4", "3", r"\text{end}"],
                 ["0", "0", "0", "0", "1", "3", "3", "6"],
-                ["0", "0", "1", "5", "3", "7", "6", ""],
             ],
             row_labels=[
-                manim.MathTex(r"\text{cost}"),
-                manim.MathTex(r"\text{dp}"),
-                manim.MathTex(r"\text{cost} + \text{dp}"),
+                SizedContainer(
+                    width=1.8,
+                    height=0,
+                    mobject=manim.MathTex(r"\text{cost}"),
+                ),
+                SizedContainer(
+                    width=1.8,
+                    height=0,
+                    mobject=manim.MathTex(r"\text{dp}"),
+                ),
             ],
             element_to_mobject=lambda el: SizedContainer(
                 width=0.4,
@@ -38,7 +46,7 @@ class dp_05_01(manim.Scene):
         )
 
         # Hide all values
-        for i in range(2, 4):
+        for i in range(2, 3):
             for j in range(2, 10):
                 table.get_entries((i, j)).set_opacity(0)
 
@@ -55,21 +63,27 @@ class dp_05_01(manim.Scene):
             manim.Write(table.get_entries((2, 3))),
         )
 
-        set_table_mobject(table, (3, 2), manim.MathTex("0"))
-        set_table_mobject(table, (3, 3), manim.MathTex("0"))
+        # Show addition of cost and dp
+        add_label = manim.MathTex(r"\text{cost}+\text{dp}")
+        add_label.next_to(table.get_cell((2, 1)), manim.DOWN * self.ADD_BUFF)
+
+        last = manim.MathTex("0")
+        last.next_to(table.get_cell((2, 2)), manim.DOWN * self.ADD_BUFF)
+        curr = manim.MathTex("0")
+        curr.next_to(table.get_cell((2, 3)), manim.DOWN * self.ADD_BUFF)
         self.play(
-            manim.FadeIn(table.get_entries((3, 2)), shift=manim.DOWN),
-            manim.FadeIn(table.get_entries((3, 3)), shift=manim.DOWN),
+            manim.AnimationGroup(
+                manim.FadeIn(add_label, shift=manim.DOWN),
+                manim.AnimationGroup(
+                    manim.FadeIn(last, shift=manim.DOWN),
+                    manim.FadeIn(curr, shift=manim.DOWN),
+                ),
+                lag_ratio=0.5,
+                run_time=1.5,
+            )
         )
 
         self.wait()
-
-        def arrow_pos(entry: manim.VMobject, direction: np.ndarray = manim.RIGHT):
-            return (
-                entry.get_center()
-                + (entry.get_width() + hbuff) * direction / 2
-                + (entry.get_height() + vbuff) * manim.DOWN / 2
-            )
 
         # Write arrows and recursive cases
         cost = [0, 0, 1, 5, 2, 4, 3]
@@ -79,85 +93,51 @@ class dp_05_01(manim.Scene):
         for i in range(3, 9):
             if i > 3:
                 # Show add
-                add.append(cost[i - 2] + values[-1])
-                set_table_mobject(table, (3, i), manim.MathTex(f"{add[-1]}"))
+                add = [cost[i - 3] + values[-2], cost[i - 2] + values[-1]]
+
+                last = manim.MathTex(f"{add[-2]}")
+                last.next_to(table.get_cell((2, i - 1)), manim.DOWN * self.ADD_BUFF)
+                curr = manim.MathTex(f"{add[-1]}")
+                curr.next_to(table.get_cell((2, i)), manim.DOWN * self.ADD_BUFF)
+
                 self.play(
-                    manim.FadeIn(table.get_entries((3, i)), shift=manim.DOWN),
+                    manim.FadeIn(last, shift=manim.DOWN),
+                    manim.FadeIn(curr, shift=manim.DOWN),
                 )
 
-            # Write curved arrows and indicate the two values being compared
-            sec_last = table.get_entries((3, i - 1))
-            last = table.get_entries((3, i))
-            min_add = last if add[-1] <= add[-2] else sec_last
-            curr = table.get_entries((2, i + 1))
-            vbuff = 0.4
-            hbuff = 0.4
+            # Indicate the two values being compared
             froms.append(-1 if add[-1] <= add[-2] else -2)
-
-            arrow = manim.CurvedArrow(
-                start_point=arrow_pos(min_add),
-                end_point=arrow_pos(curr, manim.ORIGIN),
-                angle=manim.PI / 2,
-                stroke_width=4,
-            )
+            min_add = curr if froms[-1] == -1 else last
 
             indicate_anim = manim.AnimationGroup(
                 manim.Indicate(
-                    sec_last, color=manim.GREEN if min_add == sec_last else manim.RED
+                    last, color=manim.GREEN if min_add == last else manim.RED
                 ),
                 manim.Indicate(
-                    last, color=manim.GREEN if min_add == last else manim.RED
+                    curr, color=manim.GREEN if min_add == curr else manim.RED
                 ),
             )
 
             if add[-1] == add[-2]:
                 indicate_anim = manim.AnimationGroup(
-                    manim.Indicate(sec_last), manim.Indicate(last)
+                    manim.Indicate(last), manim.Indicate(curr)
                 )
 
-            self.play(
-                manim.AnimationGroup(
-                    indicate_anim,
-                    manim.AnimationGroup(manim.Create(arrow)),
-                    lag_ratio=0.5,
-                    run_time=1.5,
-                )
-            )
+            self.play(indicate_anim)
 
-            # Write recursive case
+            # Write recursive case and delete greater value
             value = min(add[-1], add[-2])
             values.append(value)
             set_table_mobject(table, (2, i + 1), manim.MathTex(f"{value}"))
-            self.play(manim.Write(table.get_entries((2, i + 1))))
+            self.play(manim.FadeOut(last if froms[-1] == -1 else curr))
+            self.play(
+                manim.Transform(
+                    curr if froms[-1] == -1 else last, table.get_entries((2, i + 1))
+                )
+            )
             self.wait(0.34)
 
-            # Fade out arrows
-            self.play(manim.FadeOut(arrow))
-
-        self.wait()
-
-        # Trace back arrow
-        gen = reversed(list(enumerate(froms)))
-        i = len(froms) - 1
-        while i > 0:
-            try:
-                i, f = next(gen)
-                arrow = manim.CurvedArrow(
-                    start_point=arrow_pos(
-                        table.get_entries((2, 4 + i + f)), manim.RIGHT * 0.5
-                    ),
-                    end_point=arrow_pos(
-                        table.get_entries((2, 4 + i)), manim.LEFT * 0.5
-                    ),
-                    angle=manim.PI / 2,
-                    stroke_width=4,
-                )
-                if f == -2:
-                    next(gen)
-            except StopIteration:
-                break
-            self.play(manim.Create(arrow))
-
+        self.play(manim.FadeOut(add_label))
         self.wait(2)
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
 
