@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, Hashable
 import manim
 import numpy as np
 
@@ -190,137 +190,144 @@ class dp_05_01(manim.Scene):
 
 class dp_05_02(manim.Scene):
     def construct(self):
-        # # Initialize table
-        # table = manim.Table(
-        #     [
-        #         ["f(1)", "f(2)", "f(3)"],
-        #         ["1", "2", "3"],
-        #     ],
-        #     col_labels=[manim.Tex("prev"), manim.Tex("curr"), manim.MathTex(r"\text{next} = \text{prev} + \text{curr}")],
-        #     element_to_mobject=lambda el: SizedContainer(
-        #         width=1,
-        #         height=1,
-        #         mobject=manim.MathTex(el),
-        #     ),
-        #     include_outer_lines=True,
-        # )
+        # Initialize the cost table
+        cost_table = manim.MathTable(
+            [["0", "0", "1", "5", "2", "4", "3"]],
+            row_labels=[manim.MathTex(r"\text{cost}")],
+            element_to_mobject=lambda el: SizedContainer(
+                width=0.6,
+                height=0.6,
+                mobject=manim.MathTex(el),
+            ),
+            include_outer_lines=True,
+        )
 
-        # # Show only f(0) and f(1) values
-        # vgroup = manim.VGroup()
-        # vgroup.add(table.get_entries((2, 1)))
-        # vgroup.add(table.get_entries((2, 2)))
-        # vgroup.add(table.get_entries((3, 1)))
-        # vgroup.add(table.get_entries((3, 2)))
-        # original_position = vgroup.get_center()
-        # vgroup.move_to(manim.ORIGIN)
+        initial_cost_width = cost_table.length_over_dim(0)
+        cost_table.scale_to_fit_width(manim.config["frame_width"] * 0.9)  # type: ignore
 
-        # self.play(manim.Write(vgroup))
-        # self.wait(2)
+        self.play(manim.Create(cost_table))
+        self.wait()
 
-        # # Show col labels
-        # self.play(vgroup.animate.move_to(original_position))
-        # self.play(manim.AnimationGroup(
-        #     manim.Create(table.get_col_labels()),
-        #     manim.Create(table.get_horizontal_lines()),
-        #     manim.Create(table.get_vertical_lines()),
-        #     lag_ratio=0.5,
-        #     run_time=1.5,
-        # ))
-        # self.wait(2)
+        # Initialize table
+        table = manim.Table(
+            [["0", "0", ""]],
+            element_to_mobject=lambda el: SizedContainer(
+                width=0.6,
+                height=0.6,
+                mobject=manim.MathTex(el),
+            ),
+            include_outer_lines=True,
+        )
 
-        # # Indicate the two values being added and show next value
-        # positions = [
-        #     [table.get_cell((2, i)).get_center().copy() for i in range(1, 4)],
-        #     [table.get_cell((3, i)).get_center().copy() for i in range(1, 4)],
-        # ]
-        # prev = [1, table.get_entries((2, 1)), table.get_entries((3, 1))]
-        # curr = [2, table.get_entries((2, 2)), table.get_entries((3, 2))]
-        # next = [prev[0] + curr[0], table.get_entries((2, 3)), table.get_entries((3, 3))]
-        # for i in range(4, 7):
-        #     # Indicate the two value and show next value
-        #     self.play(manim.AnimationGroup(
-        #         manim.AnimationGroup(
-        #             manim.Indicate(prev[1]),
-        #             manim.Indicate(prev[2]),
-        #             manim.Indicate(curr[1]),
-        #             manim.Indicate(curr[2]),
-        #         ),
-        #         manim.AnimationGroup(
-        #             manim.Write(next[1]),
-        #             manim.Write(next[2]),
-        #         ),
-        #         lag_ratio=0.5,
-        #         run_time=1.5,
-        #     ))
-        #     self.wait()
+        # Zoom in cost table and align it to first cell
+        zoomed_cost_table = cost_table.copy()
+        zoomed_cost_table.scale_to_fit_width(initial_cost_width)  # type: ignore
 
-        #     # Move and fade out
-        #     prev[1].generate_target()
-        #     prev[2].generate_target()
-        #     curr[1].generate_target()
-        #     curr[2].generate_target()
-        #     next[1].generate_target()
-        #     next[2].generate_target()
+        zoomed_cost_table.shift(
+            table.get_cell((1, 1)).get_center()
+            + manim.UP * table.get_cell((1, 1)).height
+            - zoomed_cost_table.get_cell((1, 2)).get_center()
+        )
 
-        #     prev[1].target.shift(manim.LEFT * table.get_cell((2, 1)).get_width())
-        #     prev[2].target.shift(manim.LEFT * table.get_cell((3, 1)).get_width())
-        #     prev[1].target.set_opacity(0)
-        #     prev[2].target.set_opacity(0)
-        #     curr[1].target.move_to(positions[0][0])
-        #     curr[2].target.move_to(positions[1][0])
-        #     next[1].target.move_to(positions[0][1])
-        #     next[2].target.move_to(positions[1][1])
+        self.play(manim.Transform(cost_table, zoomed_cost_table))
+        self.play(manim.FadeIn(table))
 
-        #     self.play(
-        #         manim.MoveToTarget(prev[1]),
-        #         manim.MoveToTarget(prev[2]),
-        #         manim.MoveToTarget(curr[1]),
-        #         manim.MoveToTarget(curr[2]),
-        #         manim.MoveToTarget(next[1]),
-        #         manim.MoveToTarget(next[2]),
-        #     )
+        # Indicate the two values being compared and show next value
+        cost = [0, 0, 1, 5, 2, 4, 3]
+        positions = [table.get_cell((1, i)).get_center().copy() for i in range(1, 4)]
+        prev = [0, table.get_entries((1, 1))]
+        curr = [0, table.get_entries((1, 2))]
+        next = [0, table.get_entries((1, 3))]
+        for i in range(2, 8):
+            # Add cost and prev/curr
+            prev_add = prev[0] + cost[i - 2]
+            curr_add = curr[0] + cost[i - 1]
+            prev_add_mob = manim.MathTex(f"{prev_add}")
+            curr_add_mob = manim.MathTex(f"{curr_add}")
+            prev_add_mob.next_to(
+                positions[0], manim.DOWN * table.get_cell((1, 1)).height * 4
+            )
+            curr_add_mob.next_to(
+                positions[1], manim.DOWN * table.get_cell((1, 1)).height * 4
+            )
 
-        #     # Update values
-        #     prev = curr.copy()
-        #     curr = next.copy()
+            self.play(
+                manim.FadeIn(prev_add_mob, shift=manim.DOWN),
+                manim.FadeIn(curr_add_mob, shift=manim.DOWN),
+            )
 
-        #     # Compute next value
-        #     next[0] = prev[0] + curr[0]
+            min_add = prev_add_mob if prev_add <= curr_add else curr_add_mob
 
-        #     # Set next
-        #     next[1] = SizedContainer(
-        #         width=1,
-        #         height=1,
-        #         mobject=manim.MathTex(f"f({i})"),
-        #     )
-        #     next[2] = SizedContainer(
-        #         width=1,
-        #         height=1,
-        #         mobject=manim.MathTex(f"{next[0]}"),
-        #     )
-        #     next[1].move_to(positions[0][2])
-        #     next[2].move_to(positions[1][2])
+            # Indicate the two value being compared and show next value
+            self.play(
+                manim.Indicate(
+                    prev_add_mob,
+                    color=manim.GREEN if min_add == prev_add_mob else manim.RED,
+                ),
+                manim.Indicate(
+                    curr_add_mob,
+                    color=manim.GREEN if min_add == curr_add_mob else manim.RED,
+                ),
+            )
 
-        # self.wait(2)
+            min_add.generate_target()
+            min_add.target.move_to(table.get_entries((1, 3)).get_center())
 
-        # # Fade out other things except f(4) and its value
-        # remain = manim.VGroup()
-        # remain.add(curr[1][0])
-        # remain.add(curr[2][0])
+            self.play(
+                manim.FadeOut(
+                    curr_add_mob if min_add == prev_add_mob else prev_add_mob
+                ),
+                manim.MoveToTarget(min_add),
+            )
 
-        # target = manim.MathTex(f"f(5)", "=", f"{curr[0]}", font_size=72)
-        # target.center()
+            next[1] = min_add
 
-        # self.play(
-        #     *[manim.FadeOut(mob) for mob in self.mobjects if mob not in remain],
-        #     manim.Transform(remain, target),
-        # )
+            self.wait()
 
-        # self.wait(2)
+            # Move and fade out
+            prev[1].generate_target()
+            curr[1].generate_target()
+            next[1].generate_target()
+            cost_table.generate_target()
 
-        # # Fade out everything
-        # self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
-        pass  # TODO: implement
+            prev[1].target.shift(manim.LEFT * table.get_cell((1, 1)).get_width())
+            prev[1].target.set_opacity(0)
+            curr[1].target.move_to(positions[0])
+            next[1].target.move_to(positions[1])
+            cost_table.target.shift(manim.LEFT * table.get_cell((1, 1)).get_width())
+
+            self.play(
+                manim.MoveToTarget(prev[1]),
+                manim.MoveToTarget(curr[1]),
+                manim.MoveToTarget(next[1]),
+                manim.MoveToTarget(cost_table),
+            )
+
+            # Compute next value
+            next[0] = min(prev[0] + cost[i - 2], curr[0] + cost[i - 1])
+
+            # Update values
+            prev = curr.copy()
+            curr = next.copy()
+
+        self.wait(2)
+
+        # Fade out other things except the result and its value
+        remain = manim.VGroup()
+        remain.add(curr[1])
+
+        target = manim.MathTex(f"{curr[0]}", font_size=72)
+        target.center()
+
+        self.play(
+            *[manim.FadeOut(mob) for mob in self.mobjects if mob not in remain],
+            manim.Transform(remain, target),
+        )
+
+        self.wait(2)
+
+        # Fade out everything
+        self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
 
 
 def set_table_mobject(table: manim.Table, pos: Sequence[int], mobject: manim.VMobject):
