@@ -46,12 +46,23 @@ class dp_05_01(manim.Scene):
         )
 
         # Hide all values
+        hidden = manim.VGroup()
         for i in range(2, 3):
             for j in range(2, 10):
+                hidden.add(table.get_entries((i, j)))
                 table.get_entries((i, j)).set_opacity(0)
 
         # Show table
-        self.play(manim.Create(get_opaque_vmobjects(table)), run_time=4)
+        self.play(
+            manim.Create(
+                manim.VGroup(
+                    *[mobj for mobj in table.get_entries() if mobj not in hidden],
+                    table.get_horizontal_lines(),
+                    table.get_vertical_lines(),
+                )
+            ),
+            run_time=3,
+        )
 
         self.wait()
 
@@ -129,15 +140,50 @@ class dp_05_01(manim.Scene):
             value = min(add[-1], add[-2])
             values.append(value)
             set_table_mobject(table, (2, i + 1), manim.MathTex(f"{value}"))
-            self.play(manim.FadeOut(last if froms[-1] == -1 else curr))
             self.play(
+                manim.FadeOut(last if froms[-1] == -1 else curr),
                 manim.Transform(
                     curr if froms[-1] == -1 else last, table.get_entries((2, i + 1))
-                )
+                ),
             )
             self.wait(0.34)
 
         self.play(manim.FadeOut(add_label))
+        self.wait(2)
+
+        # Trace back
+        vbuff = 0.4
+        hbuff = 0.4
+
+        def arrow_pos(entry: manim.VMobject, direction: np.ndarray = manim.RIGHT):
+            return (
+                entry.get_center()
+                + (entry.get_width() + hbuff) * direction / 2
+                + (entry.get_height() + vbuff) * manim.DOWN / 2
+            )
+
+        i = len(values) - 1
+        while i > 1:
+            # Show arrow from current value to the value it came from
+            f = froms[i - 2]
+            arrow = manim.CurvedArrow(
+                start_point=arrow_pos(
+                    table.get_entries((2, i + 2 + f)), manim.RIGHT * 0.5
+                ),
+                end_point=arrow_pos(table.get_entries((2, i + 2)), manim.LEFT * 0.5),
+                angle=manim.PI / 2,
+                stroke_width=4,
+            )
+
+            self.play(
+                manim.Create(arrow),
+                manim.FadeToColor(table.get_entries((2, i + 2 + f)), manim.GREEN),
+                manim.FadeToColor(table.get_entries((1, i + 2 + f)), manim.GREEN),
+            )
+            self.wait(0.5)
+
+            i += f
+
         self.wait(2)
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
 
@@ -297,21 +343,3 @@ def set_table_mobject(table: manim.Table, pos: Sequence[int], mobject: manim.VMo
     else:
         index = len(table.mob_table[0]) * (pos[0] - 1) + pos[1] - 1
         table.elements[index] = mobject
-
-
-def get_opaque_vmobjects(group: manim.VGroup) -> manim.VGroup:
-    """
-    Get everything in VGroup except for mobjects with opacity = 0.
-
-    Arguments:
-        group: the VGroup to get the opaque mobjects from
-    """
-    ogorup = manim.VGroup()
-    for mob in group:
-        if isinstance(mob, manim.VGroup):
-            ogorup.add(get_opaque_vmobjects(mob))
-        elif hasattr(mob, "opacity") and mob.get_opacity() != 0:
-            ogorup.add(mob)
-        else:
-            ogorup.add(mob)
-    return ogorup
