@@ -9,7 +9,6 @@ import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from utils.btree import BTree, BNode
 from utils.sized_container import SizedContainer
 
 

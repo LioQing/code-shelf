@@ -30,13 +30,24 @@ Constraints:
 ## Testcases
 
 ```
-cost = [10,15,20]
+Input: cost = [10,15,20]
 Output: 15
+Explanation: You will start at index 1.
+- Pay 15 and climb two steps to reach the top.
+The total cost is 15.
 ```
 
 ```
-cost = [1,100,1,1,1,100,1,1,100,1]
+Input: cost = [1,100,1,1,1,100,1,1,100,1]
 Output: 6
+Explanation: You will start at index 0.
+- Pay 1 and climb two steps to reach index 2.
+- Pay 1 and climb two steps to reach index 4.
+- Pay 1 and climb two steps to reach index 6.
+- Pay 1 and climb one step to reach index 7.
+- Pay 1 and climb two steps to reach index 9.
+- Pay 1 and climb one step to reach the top.
+The total cost is 6.
 ```
 
 ---
@@ -110,7 +121,10 @@ function minCostClimbingStairs(cost: int[]) -> int:
 Time complexity: $O(n)$  
 Space complexity: $O(n)$
 
-***video***
+<VideoPlayer
+    src={require('/video/dp/dp_05_01.mp4').default}
+    text='The solution to min cost climbing stairs problem with cost = [1,5,2,4,3].'
+/> 
 
 ## Space Optimization
 
@@ -142,11 +156,32 @@ function minCostClimbingStairs(cost: int[]) -> int:
 Time complexity: $O(n)$  
 Space complexity: $O(1)$
 
-***video***
+<VideoPlayer
+    src={require('/video/dp/dp_05_02.mp4').default}
+    text='The space optimized solution to min cost climbing stairs problem with cost = [1,5,2,4,3].'
+/> 
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
 :::checkpoint Checkpoint
+
+<MultipleChoice
+    options={[
+        'The summation of the costs',
+        'The minimum of the costs',
+        'The summation of the combination to reach the step',
+        'The number of subproblems',
+    ]}
+    answer={1}
+    explanation='
+    Since the problem is about the minimum cost, the relation between the solution and
+    the solution of the subproblems is that the minimum among the subproblem is the solution.
+    We only need to use summation if we are finding the number of combinations like the
+    original climbing stairs problem.'>
+
+In this problem, what do we take from the subproblems to get the larger problem from the subproblems?
+
+</MultipleChoice>
 
 :::
 

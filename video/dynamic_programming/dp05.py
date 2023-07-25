@@ -14,14 +14,14 @@ from utils.sized_container import SizedContainer
 
 
 class dp_05_01(manim.Scene):
-    ADD_BUFF = 1.2
+    ADD_BUFF = 1.3
 
     def construct(self):
         # Initialize table from 1 to 8 representing f(1) to f(8)
         table = manim.MathTable(
             [
-                ["0", "0", "1", "5", "2", "4", "3", r"\text{end}"],
-                ["0", "0", "0", "0", "1", "3", "3", "6"],
+                ["1", "5", "2", "4", "3", ""],
+                ["0", "0", "1", "3", "3", "6"],
             ],
             row_labels=[
                 SizedContainer(
@@ -36,8 +36,8 @@ class dp_05_01(manim.Scene):
                 ),
             ],
             element_to_mobject=lambda el: SizedContainer(
-                width=0.4,
-                height=0.4,
+                width=0.8,
+                height=0.8,
                 mobject=manim.MathTex(el),
             ),
             v_buff=0.6,
@@ -48,7 +48,7 @@ class dp_05_01(manim.Scene):
         # Hide all values
         hidden = manim.VGroup()
         for i in range(2, 3):
-            for j in range(2, 10):
+            for j in range(2, 8):
                 hidden.add(table.get_entries((i, j)))
                 table.get_entries((i, j)).set_opacity(0)
 
@@ -78,9 +78,9 @@ class dp_05_01(manim.Scene):
         add_label = manim.MathTex(r"\text{cost}+\text{dp}")
         add_label.next_to(table.get_cell((2, 1)), manim.DOWN * self.ADD_BUFF)
 
-        last = manim.MathTex("0")
+        last = manim.MathTex("1")
         last.next_to(table.get_cell((2, 2)), manim.DOWN * self.ADD_BUFF)
-        curr = manim.MathTex("0")
+        curr = manim.MathTex("5")
         curr.next_to(table.get_cell((2, 3)), manim.DOWN * self.ADD_BUFF)
         self.play(
             manim.AnimationGroup(
@@ -97,11 +97,11 @@ class dp_05_01(manim.Scene):
         self.wait()
 
         # Write arrows and recursive cases
-        cost = [0, 0, 1, 5, 2, 4, 3]
+        cost = [1, 5, 2, 4, 3]
         values = [0, 0]
-        add = [0, 0]
+        add = [1, 5]
         froms = []
-        for i in range(3, 9):
+        for i in range(3, 7):
             if i > 3:
                 # Show add
                 add = [cost[i - 3] + values[-2], cost[i - 2] + values[-1]]
@@ -152,8 +152,8 @@ class dp_05_01(manim.Scene):
         self.wait(2)
 
         # Trace back
-        vbuff = 0.4
-        hbuff = 0.4
+        vbuff = 0.6
+        hbuff = 0.6
 
         def arrow_pos(entry: manim.VMobject, direction: np.ndarray = manim.RIGHT):
             return (
@@ -192,7 +192,7 @@ class dp_05_02(manim.Scene):
     def construct(self):
         # Initialize the cost table
         cost_table = manim.MathTable(
-            [["0", "0", "1", "5", "2", "4", "3"]],
+            [["1", "5", "2", "4", "3"]],
             row_labels=[manim.MathTex(r"\text{cost}")],
             element_to_mobject=lambda el: SizedContainer(
                 width=0.6,
@@ -233,22 +233,22 @@ class dp_05_02(manim.Scene):
         self.play(manim.FadeIn(table))
 
         # Indicate the two values being compared and show next value
-        cost = [0, 0, 1, 5, 2, 4, 3]
+        cost = [1, 5, 2, 4, 3]
         positions = [table.get_cell((1, i)).get_center().copy() for i in range(1, 4)]
         prev = [0, table.get_entries((1, 1))]
         curr = [0, table.get_entries((1, 2))]
-        next = [0, table.get_entries((1, 3))]
-        for i in range(2, 8):
+        next = [1, table.get_entries((1, 3))]
+        for i in range(2, 6):
             # Add cost and prev/curr
             prev_add = prev[0] + cost[i - 2]
             curr_add = curr[0] + cost[i - 1]
             prev_add_mob = manim.MathTex(f"{prev_add}")
             curr_add_mob = manim.MathTex(f"{curr_add}")
             prev_add_mob.next_to(
-                positions[0], manim.DOWN * table.get_cell((1, 1)).height * 4
+                positions[0], manim.DOWN * table.get_cell((1, 1)).height * 3.6
             )
             curr_add_mob.next_to(
-                positions[1], manim.DOWN * table.get_cell((1, 1)).height * 4
+                positions[1], manim.DOWN * table.get_cell((1, 1)).height * 3.6
             )
 
             self.play(
@@ -281,8 +281,6 @@ class dp_05_02(manim.Scene):
             )
 
             next[1] = min_add
-
-            self.wait()
 
             # Move and fade out
             prev[1].generate_target()
