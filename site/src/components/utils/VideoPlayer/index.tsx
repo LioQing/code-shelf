@@ -4,14 +4,14 @@ import styles from './styles.module.css';
 
 interface VideoPlayerProps {
   src: string;
-  text?: string;
+  children?: React.ReactNode;
 }
 
-const VideoPlayer = ({ src, text }: VideoPlayerProps) => {
+const VideoPlayer = ({ src, children }: VideoPlayerProps) => {
   return (
     <div className={styles.div}>
-        <ReactPlayer className={styles.player} url={src} width='100%' height='auto' controls loop playing muted/>
-        <p className={styles.text}>{text}</p>
+      <ReactPlayer className={styles.player} url={src} width='100%' height='auto' controls loop playing muted />
+      <div className={styles.text}>{children}</div>
     </div>
   );
 };

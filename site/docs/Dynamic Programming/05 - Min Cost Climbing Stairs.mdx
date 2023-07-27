@@ -121,10 +121,28 @@ function minCostClimbingStairs(cost: int[]) -> int:
 Time complexity: $O(n)$  
 Space complexity: $O(n)$
 
-<VideoPlayer
-    src={require('/video/dp/dp_05_01.mp4').default}
-    text='The solution to min cost climbing stairs problem with cost = [1,5,2,4,3].'
-/> 
+<VideoPlayer src={require('/video/dp/dp_05_01.mp4').default}>
+
+The solution to min cost climbing stairs problem with $\text{cost} = [1,5,2,4,3]$.
+
+</VideoPlayer>
+
+import MinCostClimbingStairs from '@site/src/components/interactives/dp/MinCostClimbingStairs';
+import TextInput from '@site/src/components/utils/TextInput';
+
+:::interactive Try it out
+
+<MinCostClimbingStairs>
+
+$\text{cost} = [$
+
+<TextInput />
+
+$]$
+
+</MinCostClimbingStairs>
+
+:::
 
 ## Space Optimization
 
@@ -156,14 +174,15 @@ function minCostClimbingStairs(cost: int[]) -> int:
 Time complexity: $O(n)$  
 Space complexity: $O(1)$
 
-<VideoPlayer
-    src={require('/video/dp/dp_05_02.mp4').default}
-    text='The space optimized solution to min cost climbing stairs problem with cost = [1,5,2,4,3].'
-/> 
+<VideoPlayer src={require('/video/dp/dp_05_02.mp4').default}>
+
+The space optimized solution to min cost climbing stairs problem with $\text{cost} = [1,5,2,4,3]$.
+
+</VideoPlayer>
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
-:::checkpoint Checkpoint
+:::interactive Checkpoint
 
 <MultipleChoice
     options={[
@@ -246,7 +265,7 @@ the memoization vector with values of 0 all together.
 #include <vector>
 #include <algorithm>
 
-int climbStairs(std::vector<int>& cost) {
+int minCostClimbingStairs(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 
@@ -270,7 +289,7 @@ int climbStairs(std::vector<int>& cost) {
 #include <vector>
 #include <algorithm>
 
-int climbStairs(std::vector<int>& cost) {
+int minCostClimbingStairs(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 

@@ -44,7 +44,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           admonitions: {
             tag: ':::',
-            keywords: ['note', 'tip', 'info', 'caution', 'danger', 'checkpoint'],
+            keywords: ['note', 'tip', 'info', 'caution', 'danger', 'interactive'],
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.

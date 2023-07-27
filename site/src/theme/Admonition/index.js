@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {ThemeClassNames} from '@docusaurus/theme-common';
+import { ThemeClassNames } from '@docusaurus/theme-common';
 import Translate from '@docusaurus/Translate';
 import styles from './styles.module.css';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -118,13 +118,13 @@ const AdmonitionConfigs = {
       </Translate>
     ),
   },
-  checkpoint: {
+  interactive: {
     infimaClassName: 'primary',
     iconComponent: CheckpointIcon,
     label: (
       <Translate
-        id="theme.admonition.checkpoint"
-        description="The default label used for the Checkpoint admonition (:::checkpoint)">
+        id="theme.admonition.interactive"
+        description="The default label used for the Checkpoint admonition (:::interactive)">
         caution
       </Translate>
     ),
@@ -164,7 +164,7 @@ function extractMDXAdmonitionTitle(children) {
   };
 }
 function processAdmonitionProps(props) {
-  const {mdxAdmonitionTitle, rest} = extractMDXAdmonitionTitle(props.children);
+  const { mdxAdmonitionTitle, rest } = extractMDXAdmonitionTitle(props.children);
   return {
     ...props,
     title: props.title ?? mdxAdmonitionTitle,
@@ -172,10 +172,10 @@ function processAdmonitionProps(props) {
   };
 }
 export default function Admonition(props) {
-  const {children, type, title, icon: iconProp} = processAdmonitionProps(props);
+  const { children, type, title, icon: iconProp } = processAdmonitionProps(props);
   const typeConfig = getAdmonitionConfig(type);
   const titleLabel = title ?? typeConfig.label;
-  const {iconComponent: IconComponent} = typeConfig;
+  const { iconComponent: IconComponent } = typeConfig;
   const icon = iconProp ?? <IconComponent />;
   return (
     <div

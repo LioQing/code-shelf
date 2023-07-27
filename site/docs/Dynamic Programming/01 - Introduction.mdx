@@ -70,10 +70,11 @@ then we can compute $f(4) = f(3) + f(2) = 2 + 1 = 3$ correctly.
 If instead we have the wrong values for a subproblem, let's say the $f(1)$ under $f(3)$ is miscalculated as $0$,
 then we will obtain the wrong value $f(3) = 1$ and leading to the wrong value $f(4) = 2$.
 
-<VideoPlayer
-    src={require('/video/dp/dp_01_01.mp4').default}
-    text='Optimal substructure shown in f(4). Wrong value for f(1) leading to wrong value for f(4).'
-/> 
+<VideoPlayer src={require('/video/dp/dp_01_01.mp4').default}>
+
+Optimal substructure shown in $f(4)$. Wrong value for $f(1)$ leading to wrong value for $f(4)$.
+
+</VideoPlayer>
 
 ### Overlapping Subproblems
 
@@ -94,10 +95,11 @@ While carrying out a simple addition may not be a big deal, when the problem siz
 the overhead of repeating the same computation will become significant.
 For example, the computation $f(100)$ will repeat $f(2)$ 4181 times.
 
-<VideoPlayer
-    src={require('/video/dp/dp_01_02.mp4').default}
-    text='Overlapping subproblems shown in f(5). Same subproblems are colored in the same color. Many subproblems are repeated.'
-/>
+<VideoPlayer src={require('/video/dp/dp_01_02.mp4').default}>
+
+Overlapping subproblems shown in $f(5)$. Same subproblems are colored in the same color. Many subproblems are repeated.
+
+</VideoPlayer>
 
 ## Memoization & Bottom-up Approach
 

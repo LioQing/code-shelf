@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styles from './styles.module.css';
-import {BlankProps} from '@site/src/components/utils/Blank';
+import { BlankProps } from '@site/src/components/utils/Blank';
 import Button from '@site/src/components/utils/Button';
 
 interface FillInTheBlankProps {
@@ -12,10 +12,10 @@ const isBlank = (child: React.ReactNode) => React.isValidElement(child) && (chil
 
 const isCorrect = (answer: string, blank: React.ReactElement<BlankProps>) => answer.trim() === blank.props.answer;
 
-const FillInTheBlank = ({explanation, children}: FillInTheBlankProps) => {
+const FillInTheBlank = ({ explanation, children }: FillInTheBlankProps) => {
   const childrenArray = React.Children.toArray(children);
 
-  const [answers, setAnswers] = useState<{ [id: string] : string }>(Object.fromEntries(childrenArray
+  const [answers, setAnswers] = useState<{ [id: string]: string }>(Object.fromEntries(childrenArray
     .map((child, index) => {
       if (isBlank(child)) {
         return [index.toString(), ''];
@@ -35,7 +35,7 @@ const FillInTheBlank = ({explanation, children}: FillInTheBlankProps) => {
           correct: checked ? isCorrect(answers[index.toString()], child as React.ReactElement<BlankProps>) : undefined,
           readOnly: checked,
           onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
-            setAnswers({...answers, [index.toString()]: event.target.value});
+            setAnswers({ ...answers, [index.toString()]: event.target.value });
           },
         };
 
@@ -55,11 +55,11 @@ const FillInTheBlank = ({explanation, children}: FillInTheBlankProps) => {
         }
       })
       .filter(child => child !== undefined);
-    
+
     const numCorrect = answerResults.filter(result => result).length;
 
     const correct = `${numCorrect} out of ${answerResults.length} correct!`;
-    
+
     return (
       <div className={styles.result}>
         <h4 className={styles['correct-tag']}>{correct}</h4>

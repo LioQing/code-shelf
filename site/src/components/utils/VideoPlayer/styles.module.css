@@ -1,19 +1,19 @@
 .div {
-    margin: var(--my-multimedia-content-margin) 0px;
-    text-align: center;
+  margin: var(--my-multimedia-content-margin) 0px;
+  text-align: center;
 }
 
 .player {
-    margin-bottom: 10px;
-    box-shadow: var(--ifm-global-shadow-lw);
-    border-radius: var(--ifm-global-radius);
-    overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: var(--ifm-global-shadow-lw);
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
 }
 
-.player > video {
-    display: block;
+.player>video {
+  display: block;
 }
 
 .text {
-    font-size: var(--my-video-text-font-size);
+  font-size: var(--my-video-text-font-size);
 }

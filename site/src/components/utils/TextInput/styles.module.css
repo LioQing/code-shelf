@@ -1,0 +1,16 @@
+.text-input {
+  width: 200px;
+  box-sizing: border-box;
+  outline: none;
+  border-style: none;
+  border-radius: var(--ifm-alert-border-radius);
+  color: var(--ifm-alert-foreground-color);
+  background-color: var(--my-negative-overlay);
+  box-shadow: inset var(--ifm-global-shadow-lw);
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.text-input:active {
+  border-style: none;
+}

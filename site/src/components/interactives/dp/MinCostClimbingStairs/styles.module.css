@@ -1,0 +1,9 @@
+.input-prompt>* {
+  display: inline-block;
+  margin: 0.15rem 0;
+  padding: 0.5rem 0;
+}
+
+.input-prompt p {
+  margin: 0;
+}

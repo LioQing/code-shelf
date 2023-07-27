@@ -27,10 +27,11 @@ Because the recursion tree of the Fibonacci sequence problem is a binary tree,
 the number of recursive calls is $O(2^n)$, which is exponential.
 So as $n$ grows, the number of overlapping subproblems and thus repeated computation also grows exponentially.
 
-<VideoPlayer
-    src={require('/video/dp/dp_02_01.mp4').default}
-    text='Time complexity grows with O(2ⁿ). Yellow nodes represent repeated computation on overlapping subproblems.'
-/> 
+<VideoPlayer src={require('/video/dp/dp_02_01.mp4').default}>
+
+Time complexity grows with $O(2^n)$. Yellow nodes represent repeated computation on overlapping subproblems.
+
+</VideoPlayer>
 
 An exponential growth in time complexity is really bad, so we need to find a way to optimize it,
 and memoization is one of the ways to do so.
@@ -65,10 +66,11 @@ function fib(n: int) -> int:
 If we try to visualize the recursion tree of the above algorithm, we can see that it only has $n$ nodes,
 and each subproblem is only computed once. This reduces the time complexity to only $O(n)$.
 
-<VideoPlayer
-    src={require('/video/dp/dp_02_02.mp4').default}
-    text='Time complexity grows with O(n). The repeated computations are eliminated by directly taking stored results in `dp`.'
-/> 
+<VideoPlayer src={require('/video/dp/dp_02_02.mp4').default}>
+
+Time complexity grows with $O(n)$. The repeated computations are eliminated by directly taking stored results in $\text{dp}$.
+
+</VideoPlayer>
 
 ### Multiple Calls Optimization
 
@@ -100,7 +102,7 @@ function fib(n: int) -> int:
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
-:::checkpoint Checkpoint
+:::interactive Checkpoint
 
 <MultipleChoice
     options={[
