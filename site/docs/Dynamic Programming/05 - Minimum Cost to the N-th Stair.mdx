@@ -1,54 +1,53 @@
 ---
-description: Solve the a modified version of the climbing stairs problem.
+description: Solve the a modified version of the number of ways to the n-th stair problem.
 ---
 
 import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
-  <title>Min Cost Climbing Stairs | Dynamic Programming</title>
+  <title>Minimum Cost to the N-th Stair | Dynamic Programming</title>
 </head>
 
-This is a problem modified from the climbing stairs problem, instead of 
+This is a problem modified from the number of ways to the n-th stair problem, instead of 
 being a counting problem, it is now a minimization problem.
 
 ## Problem Description
 
-From LeetCode: [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
+You are given an integer array $\text{cost}$ where $\text{cost}[i]$
+is the cost of $i$-th step on a staircase. Once you pay the cost,
+you can either climb $1$ or $2$ steps.
 
-You are given an integer array `cost` where `cost[i]` is the cost of `ith` step on a staircase.
-Once you pay the cost, you can either climb one or two steps.
+You can either start from the step with index $0$, or the step with index $1$.
 
-You can either start from the step with index `0`, or the step with index `1`.
+Find the minimum cost to reach the top of the stair.
 
-Return the _minimum cost to reach the top of the floor_.
-
-Constraints:
-
-- `2 <= cost.length <= 1000`
-- `0 <= cost[i] <= 999`
+Given:
+- $0 < \text{lenght of cost}$
 
 ## Testcases
 
-```
+```testcase
 Input: cost = [10,15,20]
 Output: 15
-Explanation: You will start at index 1.
-- Pay 15 and climb two steps to reach the top.
-The total cost is 15.
 ```
+The optimal path:
+1. Start at index 1.
+2. Pay 15 to climb one step to reach the top.
 
-```
+<br/>
+
+```testcase
 Input: cost = [1,100,1,1,1,100,1,1,100,1]
 Output: 6
-Explanation: You will start at index 0.
-- Pay 1 and climb two steps to reach index 2.
-- Pay 1 and climb two steps to reach index 4.
-- Pay 1 and climb two steps to reach index 6.
-- Pay 1 and climb one step to reach index 7.
-- Pay 1 and climb two steps to reach index 9.
-- Pay 1 and climb one step to reach the top.
-The total cost is 6.
 ```
+The optimal path:
+1. Start at index 0.
+2. Pay 1 to climb two steps to reach index 2.
+3. Pay 1 to climb two steps to reach index 4.
+4. Pay 1 to climb two steps to reach index 6.
+5. Pay 1 to climb one step to reach index 7.
+6. Pay 1 to climb two steps to reach index 9.
+7. Pay 1 to climb one step to reach the top.
 
 ---
 
@@ -60,7 +59,7 @@ we focus on the cost to reach the $n$-th step:
 1. With a cost of $\text{cost}[n-1]$, take $1$ step from the $(n-1)$-th step.
 2. With a cost of $\text{cost}[n-2]$, take $2$ steps from the $(n-2)$-th step.
 
-We see the subproblems is almost the same as the original climbing stairs problem,
+We see the subproblems is almost the same as the original problem,
 the only difference is the cost of taking the steps.
 
 Since we want to minimize the cost, we want to take which ever costs less.
@@ -95,13 +94,13 @@ $$
 
 ## Solving the Problem
 
-We can solve the problem using the same approach as the original climbing stairs,
+We can solve the problem using the same approach as the number of ways to the n-th stair problem,
 the only difference is to use $\min$ instead of $+$ in the recurrence relation.
 
 In addition, the base cases can all be initialized to $0$ instead of specific values.
 
-```pseudocode title="Min Cost Climbing Stairs"
-function minCostClimbingStairs(cost: int[]) -> int:
+```pseudocode title="Minimum Cost to the N-th Stair"
+function MinCostToNthStair(cost: int[]) -> int:
     // the problem size
     let n = cost.length
 
@@ -123,7 +122,7 @@ Space complexity: $O(n)$
 
 <VideoPlayer src={require('/video/dp/dp_05_01.mp4').default}>
 
-The solution to min cost climbing stairs problem with $\text{cost} = [1,5,2,4,3]$.
+The solution to the minimum cost to n-th stair problem with $\text{cost} = [1,5,2,4,3]$.
 
 </VideoPlayer>
 
@@ -146,12 +145,12 @@ $]$
 
 ## Space Optimization
 
-Since the subproblems is the same as the original climbing stairs problem,
+Since the subproblems is the same as the number of ways to the n-th stair problem,
 we can optimize the space complexity to $O(1)$ in the same way, only storing
 the previous two values.
 
-```pseudocode title="Min Cost Climbing Stairs - Space Optimized"
-function minCostClimbingStairs(cost: int[]) -> int:
+```pseudocode title="Minimum Cost to the N-th Stair - Space Optimized"
+function MinCostToNthStair(cost: int[]) -> int:
     // the problem size
     let n = cost.length
 
@@ -176,7 +175,7 @@ Space complexity: $O(1)$
 
 <VideoPlayer src={require('/video/dp/dp_05_02.mp4').default}>
 
-The space optimized solution to min cost climbing stairs problem with $\text{cost} = [1,5,2,4,3]$.
+The space optimized solution to the minimum cost to n-th stair problem with $\text{cost} = [1,5,2,4,3]$.
 
 </VideoPlayer>
 
@@ -196,7 +195,7 @@ import MultipleChoice from '@site/src/components/utils/MultipleChoice';
     Since the problem is about the minimum cost, the relation between the solution and
     the solution of the subproblems is that the minimum among the subproblem is the solution.
     We only need to use summation if we are finding the number of combinations like the
-    original climbing stairs problem.'>
+    number of ways to the n-th stair problem.'>
 
 In this problem, what do we take from the subproblems to get the larger problem from the subproblems?
 
@@ -213,8 +212,8 @@ import TabItem from '@theme/TabItem';
 
 <TabItem value='python' label='Python'>
 
-```python title="Min Cost Climbing Stairs"
-def minCostClimbingStairs(cost):
+```python title="Minimum Cost to the N-th Stair"
+def minCostToNthStair(cost):
     # the problem size
     n = len(cost)
 
@@ -231,8 +230,8 @@ def minCostClimbingStairs(cost):
     return dp[n]
 ```
 
-```python title="Min Cost Climbing Stairs - Space Optimized"
-def minCostClimbingStairs(cost):
+```python title="Minimum Cost to the N-th Stair - Space Optimized"
+def minCostToNthStair(cost):
     # the problem size
     n = len(cost)
 
@@ -257,15 +256,15 @@ def minCostClimbingStairs(cost):
 <TabItem value='cpp' label='C++'>
 
 Note that we do not need to check for index out of bound error like the 
-implementation for the original climbing stairs problem, since we can initialize
+implementation for the number of ways to the n-th stair problem, since we can initialize
 the memoization vector with values of 0 all together.
 
-```cpp title="Min Cost Climbing Stairs"
+```cpp title="Minimum Cost to the N-th Stair"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
-int minCostClimbingStairs(std::vector<int>& cost) {
+int minCostToNthStair(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 
@@ -284,12 +283,12 @@ int minCostClimbingStairs(std::vector<int>& cost) {
 }
 ```
 
-```cpp title="Min Cost Climbing Stairs - Space Optimized"
+```cpp title="Minimum Cost to the N-th Stair - Space Optimized"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
-int minCostClimbingStairs(std::vector<int>& cost) {
+int minCostToNthStair(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 
@@ -315,8 +314,8 @@ int minCostClimbingStairs(std::vector<int>& cost) {
 
 <TabItem value='rust' label='Rust'>
 
-```rust title="Min Cost Climbing Stairs"
-fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
+```rust title="Minimum Cost to the N-th Stair"
+fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
     // the problem size
     let n = cost.len();
 
@@ -335,8 +334,8 @@ fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
 }
 ```
 
-```rust title="Min Cost Climbing Stairs - Space Optimized"
-fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
+```rust title="Minimum Cost to the N-th Stair - Space Optimized"
+fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
     // the problem size
     let n = cost.len();
 
@@ -361,3 +360,7 @@ fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
 </TabItem>
 
 </Tabs>
+
+## Related Topics
+
+LeetCode - Min Cost Climbing Stairs: [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
