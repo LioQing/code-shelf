@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import CorrectIcon from '@site/src/components/utils/CorrectIcon';
-import TextInput from '@site/src/components/utils/TextInput';
+import TextInput, { TextInputState } from '@site/src/components/utils/TextInput';
 
 export interface BlankProps {
   answer: string;
@@ -16,6 +16,7 @@ const Blank = ({ answer, value, correct, readOnly, onChange }: BlankProps) => {
     <div className={styles.wrapper}>
       <TextInput
         value={value}
+        state={correct === undefined ? TextInputState.Default : correct ? TextInputState.Correct : TextInputState.Incorrect}
         className={correct === undefined ? '' : styles.checked}
         onChange={onChange}
         readOnly={readOnly}

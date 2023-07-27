@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
 import Table from '@site/src/components/utils/Table';
+import { TextInputState } from '@site/src/components/utils/TextInput';
 
 interface MinCostClimbingStairsProps {
   children?: React.ReactNode;
@@ -12,6 +13,7 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
   const childrenArray = React.Children.toArray(children);
 
   const [costTextInput, setCostTextInput] = useState('1,5,2,4,3');
+  const [inputState, setInputState] = useState(TextInputState.Default);
   const [cost, setCost] = useState([1, 5, 2, 4, 3]);
 
   const textInput = childrenArray
@@ -20,6 +22,8 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
         const newProps = {
           key: index,
           value: costTextInput,
+          state: inputState,
+          className: styles['text-input'],
           onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
             setCostTextInput(event.target.value);
 
@@ -27,10 +31,14 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
             const regex = /^\s*(\d+\s*,\s*)*\d+\s*$/
             if (regex.test(event.target.value)) {
               setCost(event.target.value.split(',').map(v => parseInt(v.trim())));
+              setInputState(TextInputState.Default);
+            } else {
+              setInputState(TextInputState.Incorrect);
             }
           },
           onBlur: () => {
             setCostTextInput(cost.join(','));
+            setInputState(TextInputState.Default);
           },
         };
 

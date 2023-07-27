@@ -14,3 +14,37 @@
 .text-input:active {
   border-style: none;
 }
+
+.border {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: -2px;
+}
+
+.default {
+  outline-color: transparent;
+}
+
+.correct {
+  outline-color: var(--ifm-color-success-dark);
+}
+
+[data-theme='dark'] .correct {
+  outline-color: var(--ifm-color-success-light);
+}
+
+.incorrect {
+  outline-color: var(--ifm-color-danger-dark);
+}
+
+[data-theme='dark'] .incorrect {
+  outline-color: var(--ifm-color-danger-light);
+}
+
+.warning {
+  outline-color: var(--ifm-color-warning-dark);
+}
+
+[data-theme='dark'] .warning {
+  outline-color: var(--ifm-color-warning-light);
+}
