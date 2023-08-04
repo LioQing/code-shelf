@@ -1,17 +1,19 @@
 ---
-description: Count the number of ways to reach the n-th stair using dynamic programming.
+description: Count the number of ways to go up a n-th stair using dynamic programming.
 ---
 
 import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
-  <title>Number of Ways to the N-th Stair | Dynamic Programming</title>
+  <title>Number of Ways Up the Stair | Dynamic Programming</title>
 </head>
+
+## Problem
 
 This problem will act as a template to solving dynamic programming problems in our future problems.
 We will use these steps below to solve almost all of our dynamic programming problems.
 
-## Problem Description
+### Problem Description
 
 You are climbing up a staircase. It takes $n$ steps to reach the top.
 
@@ -22,7 +24,7 @@ In how many distinct ways can you climb to the top?
 Given:
 - $0 < n$
 
-## Testcases
+### Testcases
 
 ```testcase
 Input: n = 2
@@ -45,7 +47,9 @@ There are three ways to climb to the top:
 
 ---
 
-## Forming the Recurrence Relation
+## Solution
+
+### Forming the Recurrence Relation
 
 At the $n$-th step, there are two ways to get to the $n$-th step:
 
@@ -65,6 +69,8 @@ $$
 f(n) = f(n - 1) + f(n - 2)
 $$
 
+### Base Cases
+
 We also need to consider the base cases, which are the first two steps.
 
 1. There is $1$ way to get to the first step, i.e. take $1$ step.
@@ -77,7 +83,7 @@ f(2) &= 2
 \end{aligned}
 $$
 
-## Solving the Problem
+### Solving the Problem
 
 We can solve the problem using the recurrence relation above, which is exactly the same as the Fibonacci sequence,
 with only differences in the base cases.
@@ -86,18 +92,21 @@ So with the bottom-up approach, we can solve the problem similar to the Fibonacc
 We will use a memoization array of size $n$, one-based index, because the smallest base case is $1$.
 Then, we can calculate the next values using the necessary previous values.
 
-```pseudocode title="Number of Ways to the N-th Stair"
-function waysToNthStair(n: int) -> int:
+```pseudocode title="Number of Ways Up the Stair"
+function number_of_ways_up_the_stair(n: int) -> int {
     // initialize memoization array
-    let dp = [...] of size n, one-based index
+    let dp = [...] of size n
+             one-based index
     let dp[1] = 1
     let dp[2] = 2
 
     // calculate next values
-    for i from 3 to n:
+    for i from 3 to n {
         dp[i] = dp[i - 1] + dp[i - 2]
+    }
 
     return dp[n]
+}
 ```
 
 Time complexity: $O(n)$  
@@ -105,7 +114,7 @@ Space complexity: $O(n)$
 
 <VideoPlayer src={require('/video/dp/dp_04_01.mp4').default}>
 
-The solution to the number of ways to the n-th stair problem with $n = 5$.
+The solution to the number of ways up the stair problem with $n = 5$.
 
 </VideoPlayer>
 
@@ -114,23 +123,26 @@ The solution to the number of ways to the n-th stair problem with $n = 5$.
 We can find that we only need the previous two values to calculate the next value, 
 so we can optimize the space complexity to $O(1)$ by only storing the previous two values.
 
-```pseudocode title="Number of Ways to the N-th Stair - Space Optimized"
-function waysToNthStair(n: int) -> int:
+```pseudocode title="Number of Ways Up the Stair - Space Optimized"
+function number_of_ways_up_the_stair(n: int) -> int {
     // initialize base cases
     let prev = 1
     let curr = 2
 
     // exceptional case for n = 1
-    if n == 1:
+    if n == 1 {
         return prev
+    }
 
     // calculate next values
-    for i from 3 to n:
+    for i from 3 to n {
         let next = prev + curr
         prev = curr
         curr = next
+    }
 
     return curr
+}
 ```
 
 Time complexity: $O(n)$  
@@ -138,7 +150,7 @@ Space complexity: $O(1)$
 
 <VideoPlayer src={require('/video/dp/dp_04_02.mp4').default}>
 
-The space optimized solution to the number of ways to the n-th stair problem with $n = 5$.
+The space optimized solution to the number of ways up the stair problem with $n = 5$.
 
 </VideoPlayer>
 
@@ -165,7 +177,7 @@ What is the main goal of forming the recurrence relation in the beginning?
 
 :::
 
-## Implementation
+### Implementation
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -183,8 +195,8 @@ In your own implementation, you can use a memoization array of size $n$ and offs
 
 Note that $n = 1$ is exceptional, because initializing the $2$-nd element will cause an index out of bounds error.
 
-```python title="Number of Ways to the N-th Stair"
-def waysToNthStair(n):
+```python title="Number of Ways Up the Stair"
+def numberOfWaysUpTheStair(n):
     # exceptional case for n = 1
     if n == 1:
         return 1
@@ -201,8 +213,8 @@ def waysToNthStair(n):
     return dp[n]
 ```
 
-```python title="Number of Ways to the N-th Stair - Space Optimized"
-def waysToNthStair(n):
+```python title="Number of Ways Up the Stair - Space Optimized"
+def numberOfWaysUpTheStair(n):
     # initialize base cases
     prev = 1
     curr = 2
@@ -233,11 +245,10 @@ In your own implementation, you can use a memoization array of size $n$ and offs
 
 Note that $n = 1$ is exceptional, because initializing the $2$-nd element will cause an index out of bounds error.
 
-```cpp title="Number of Ways to the N-th Stair"
-#include <iostream>
+```cpp title="Number of Ways Up the Stair"
 #include <vector>
 
-int waysToNthStair(int n) {
+int number_of_ways_up_the_stair(int n) {
     // exceptional case for n = 1
     if (n == 1) {
         return 1;
@@ -257,10 +268,8 @@ int waysToNthStair(int n) {
 }
 ```
 
-```cpp title="Number of Ways to the N-th Stair - Space Optimized"
-#include <iostream>
-
-int waysToNthStair(int n) {
+```cpp title="Number of Ways Up the Stair - Space Optimized"
+int number_of_ways_up_the_stair(int n) {
     // initialize base cases
     int prev = 1;
     int curr = 2;
@@ -294,29 +303,29 @@ In your own implementation, you can use a memoization array of size $n$ and offs
 
 Note that $n = 1$ is exceptional, because initializing the $2$-nd element will cause an index out of bounds error.
 
-```rust title="Number of Ways to the N-th Stair"
-fn ways_to_nth_stair(n: i32) -> i32 {
+```rust title="Number of Ways Up the Stair"
+fn number_of_ways_up_the_stair(n: usize) -> usize {
     // exceptional case for n = 1
     if n == 1 {
         return 1;
     }
 
     // initialize memoization vector
-    let mut dp = vec![0; n as usize + 1];
+    let mut dp = vec![0; n + 1];
     dp[1] = 1;
     dp[2] = 2;
 
     // calculate next values
-    for i in 3..=n as usize {
+    for i in 3..=n {
         dp[i] = dp[i - 1] + dp[i - 2];
     }
 
-    dp[n as usize]
+    dp[n]
 }
 ```
 
-```rust title="Number of Ways to the N-th Stair - Space Optimized"
-fn ways_to_nth_stair(n: i32) -> i32 {
+```rust title="Number of Ways Up the Stair - Space Optimized"
+fn number_of_ways_up_the_stair(n: usize) -> usize {
     // initialize base cases
     let mut prev = 1;
     let mut curr = 2;
@@ -343,4 +352,4 @@ fn ways_to_nth_stair(n: i32) -> i32 {
 
 ## Related Topics
 
-LeetCode - Climbing Stairs: [https://leetcode.com/problems/climbing-stairs/](https://leetcode.com/problems/climbing-stairs/)
+LeetCode - Climbing Stairs: https://leetcode.com/problems/climbing-stairs/

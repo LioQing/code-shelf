@@ -1,17 +1,19 @@
 ---
-description: Solve the a modified version of the number of ways to the n-th stair problem.
+description: Solve the a modified version of the number of ways up the stair problem.
 ---
 
 import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
 <head>
-  <title>Minimum Cost to the N-th Stair | Dynamic Programming</title>
+  <title>Minimum Cost Up the Stair | Dynamic Programming</title>
 </head>
 
-This is a problem modified from the number of ways to the n-th stair problem, instead of 
+## Problem
+
+This is a problem modified from the number of ways up the stair problem, instead of 
 being a counting problem, it is now a minimization problem.
 
-## Problem Description
+### Problem Description
 
 You are given an integer array $\text{cost}$ where $\text{cost}[i]$
 is the cost of $i$-th step on a staircase. Once you pay the cost,
@@ -24,7 +26,7 @@ Find the minimum cost to reach the top of the stair.
 Given:
 - $0 < \text{lenght of cost}$
 
-## Testcases
+### Testcases
 
 ```testcase
 Input: cost = [10,15,20]
@@ -51,7 +53,9 @@ The optimal path:
 
 ---
 
-## Forming the Recurrence Relation
+## Solution
+
+### Forming the Recurrence Relation
 
 At the $n$-th step, instead of focusing on the number of ways to reach the $n$-th step,
 we focus on the cost to reach the $n$-th step:
@@ -82,6 +86,8 @@ clearer the number of subproblems in the relation in future chapters.
 
 :::
 
+### Base Cases
+
 As for the base cases, since we can start at index $0$ or $1$, both of their costs
 are $0$.
 
@@ -92,29 +98,33 @@ f(1) &= 0
 \end{aligned}
 $$
 
-## Solving the Problem
+### Solving the Problem
 
-We can solve the problem using the same approach as the number of ways to the n-th stair problem,
+We can solve the problem using the same approach as the number of ways up the stair problem,
 the only difference is to use $\min$ instead of $+$ in the recurrence relation.
 
 In addition, the base cases can all be initialized to $0$ instead of specific values.
 
-```pseudocode title="Minimum Cost to the N-th Stair"
-function MinCostToNthStair(cost: int[]) -> int:
+```pseudocode title="Minimum Cost Up the Stair"
+function min_cost_up_the_stair(cost: int[]) -> int {
     // the problem size
     let n = cost.length
 
     // initialize memoization array
-    let dp = [...] of size n + 1, zero-based index, initialized to 0
+    let dp = [...] of size n + 1
+             zero-based index
+             initialized to 0
 
     // calculate next values
-    for i from 2 to n:
+    for i from 2 to n {
         dp[i] = min(
             dp[i - 1] + cost[i - 1],
             dp[i - 2] + cost[i - 2],
         )
+    }
 
     return dp[n]
+}
 ```
 
 Time complexity: $O(n)$  
@@ -122,7 +132,7 @@ Space complexity: $O(n)$
 
 <VideoPlayer src={require('/video/dp/dp_05_01.mp4').default}>
 
-The solution to the minimum cost to n-th stair problem with $\text{cost} = [1,5,2,4,3]$.
+The solution to the minimum cost up the stair problem with $\text{cost} = [1,5,2,4,3]$.
 
 </VideoPlayer>
 
@@ -143,14 +153,14 @@ $]$
 
 :::
 
-## Space Optimization
+### Space Optimization
 
-Since the subproblems is the same as the number of ways to the n-th stair problem,
+Since the subproblems is the same as the number of ways up the stair problem,
 we can optimize the space complexity to $O(1)$ in the same way, only storing
 the previous two values.
 
-```pseudocode title="Minimum Cost to the N-th Stair - Space Optimized"
-function MinCostToNthStair(cost: int[]) -> int:
+```pseudocode title="Minimum Cost Up the Stair - Space Optimized"
+function min_cost_up_the_stair(cost: int[]) -> int {
     // the problem size
     let n = cost.length
 
@@ -159,15 +169,17 @@ function MinCostToNthStair(cost: int[]) -> int:
     let curr = 0
 
     // calculate next values
-    for i from 2 to n:
+    for i from 2 to n {
         let next = min(
             curr + cost[i - 1],
             prev + cost[i - 2],
         )
         prev = curr
         curr = next
+    }
 
     return curr
+}
 ```
 
 Time complexity: $O(n)$  
@@ -175,7 +187,7 @@ Space complexity: $O(1)$
 
 <VideoPlayer src={require('/video/dp/dp_05_02.mp4').default}>
 
-The space optimized solution to the minimum cost to n-th stair problem with $\text{cost} = [1,5,2,4,3]$.
+The space optimized solution to the minimum cost up the stair problem with $\text{cost} = [1,5,2,4,3]$.
 
 </VideoPlayer>
 
@@ -195,7 +207,7 @@ import MultipleChoice from '@site/src/components/utils/MultipleChoice';
     Since the problem is about the minimum cost, the relation between the solution and
     the solution of the subproblems is that the minimum among the subproblem is the solution.
     We only need to use summation if we are finding the number of combinations like the
-    number of ways to the n-th stair problem.'>
+    number of ways up the stair problem.'>
 
 In this problem, what do we take from the subproblems to get the larger problem from the subproblems?
 
@@ -203,7 +215,7 @@ In this problem, what do we take from the subproblems to get the larger problem 
 
 :::
 
-## Implementation
+### Implementation
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -212,8 +224,8 @@ import TabItem from '@theme/TabItem';
 
 <TabItem value='python' label='Python'>
 
-```python title="Minimum Cost to the N-th Stair"
-def minCostToNthStair(cost):
+```python title="Minimum Cost Up the Stair"
+def minCostUpTheStair(cost):
     # the problem size
     n = len(cost)
 
@@ -230,8 +242,8 @@ def minCostToNthStair(cost):
     return dp[n]
 ```
 
-```python title="Minimum Cost to the N-th Stair - Space Optimized"
-def minCostToNthStair(cost):
+```python title="Minimum Cost Up the Stair - Space Optimized"
+def minCostUpTheStair(cost):
     # the problem size
     n = len(cost)
 
@@ -256,15 +268,14 @@ def minCostToNthStair(cost):
 <TabItem value='cpp' label='C++'>
 
 Note that we do not need to check for index out of bound error like the 
-implementation for the number of ways to the n-th stair problem, since we can initialize
+implementation for the number of ways up the stair problem, since we can initialize
 the memoization vector with values of 0 all together.
 
-```cpp title="Minimum Cost to the N-th Stair"
-#include <iostream>
+```cpp title="Minimum Cost Up the Stair"
 #include <vector>
 #include <algorithm>
 
-int minCostToNthStair(std::vector<int>& cost) {
+int min_cost_up_the_stair(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 
@@ -283,12 +294,11 @@ int minCostToNthStair(std::vector<int>& cost) {
 }
 ```
 
-```cpp title="Minimum Cost to the N-th Stair - Space Optimized"
-#include <iostream>
+```cpp title="Minimum Cost Up the Stair - Space Optimized"
 #include <vector>
 #include <algorithm>
 
-int minCostToNthStair(std::vector<int>& cost) {
+int min_cost_up_the_stair(std::vector<int>& cost) {
     // the problem size
     int n = cost.size();
 
@@ -314,8 +324,8 @@ int minCostToNthStair(std::vector<int>& cost) {
 
 <TabItem value='rust' label='Rust'>
 
-```rust title="Minimum Cost to the N-th Stair"
-fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
+```rust title="Minimum Cost Up the Stair"
+fn min_cost_up_the_stair(cost: Vec<i32>) -> i32 {
     // the problem size
     let n = cost.len();
 
@@ -334,8 +344,8 @@ fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
 }
 ```
 
-```rust title="Minimum Cost to the N-th Stair - Space Optimized"
-fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
+```rust title="Minimum Cost Up the Stair - Space Optimized"
+fn min_cost_up_the_stair(cost: Vec<i32>) -> i32 {
     // the problem size
     let n = cost.len();
 
@@ -363,4 +373,4 @@ fn min_cost_to_nth_stair(cost: Vec<i32>) -> i32 {
 
 ## Related Topics
 
-LeetCode - Min Cost Climbing Stairs: [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
+LeetCode - Min Cost Climbing Stairs: https://leetcode.com/problems/min-cost-climbing-stairs/

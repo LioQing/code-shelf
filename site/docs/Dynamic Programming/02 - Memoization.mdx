@@ -54,13 +54,14 @@ let dp[0] = 0
 let dp[1] = 1
 
 // fibonacci function
-function fib(n: int) -> int:
+function fib(n: int) -> int {
     // check if we have the memoized result
-    if dp[n] is not null: return dp[n]
+    if dp[n] is not null { return dp[n] }
 
     // compute the result
     dp[n] = fib(n - 1) + fib(n - 2)
     return dp[n]
+}
 ```
 
 If we try to visualize the recursion tree of the above algorithm, we can see that it only has $n$ nodes,
@@ -88,9 +89,9 @@ which reduces the average time complexity of the solution if multiple calls are 
 let dp = [0, 1]
 
 // fibonacci function
-function fib(n: int) -> int:
+function fib(n: int) -> int {
     // grow the array if needed
-    if dp.length <= n: dp.resize(n + 1, filled with null)
+    if dp.length <= n { dp.resize(n + 1, filled with null) }
 
     // check if we have the memoized result
     if dp[n] is not null: return dp[n]
@@ -98,6 +99,7 @@ function fib(n: int) -> int:
     // compute the result
     dp[n] = fib(n - 1) + fib(n - 2)
     return dp[n]
+}
 ```
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';

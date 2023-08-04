@@ -1,0 +1,359 @@
+---
+description: Count the number of unique paths to reach the bottom right corner.
+---
+
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
+
+<head>
+  <title>Unique Paths to Corner | Dynamic Programming</title>
+</head>
+
+## Problem
+
+This problem will introduce you to dynamic programming with 2 varying
+parameters.
+
+### Problem Description
+
+You start at the top left corner $(1, 1)$ of a 2D grid of size $m \times n$.
+
+You can only move either down or right at any point in time.
+
+Count the number of unique paths to reach the bottom right corner $(m, n)$ of the grid.
+
+Given:
+- $0 < m, n$
+
+### Testcases
+
+```testcase
+Input: m = 3, n = 2
+Output: 3
+```
+There are three ways to go from top left to bottom right corner:
+1. Right -> Down -> Down
+2. Down -> Down -> Right
+3. Down -> Right -> Down
+
+<br />
+
+```testcase
+Input: m = 3, n = 7
+Output: 28
+```
+
+---
+
+## Solution
+
+### Forming the Recurrence Relation
+
+Finding the subproblems should be straight forward. At any point in time,
+we can only move either down or right, so if we are at position $(m, n)$,
+we can:
+
+1. Move from above $(m - 1, n)$.
+2. Move from left $(m, n - 1)$.
+
+Similar to the number of ways up the stair problem, we are counting the
+number of ways to reach the bottom right corner. So, the relation is
+a summation again.
+
+Let $f(m, n)$ be the number of unique paths to $(m, n)$ from $(1, 1)$:
+
+$$
+f(m, n) = \sum \begin{cases}
+f(m - 1, n) \\
+f(m, n - 1)
+\end{cases}
+$$
+
+### Base Cases
+
+For the base case, the grid is the smallest when it has a size of $1 \times 1$,
+where the number of unique path would be $1$.
+
+$$
+f(1, 1) = 1
+$$
+
+### Edge Cases
+
+However, the problem does not always converge to the base case.
+
+If we look at the recurrence relation, we can still go out of bound if we are
+at position such as $(1, 7)$ or $(7, 1)$.
+
+So, to make sure we don't go out of bound when $m = 1$ or $n = 1$, we need
+to add the edge cases:
+
+$$
+\begin{aligned}
+f(1, n) &= f(1, n - 1) \\
+f(m, 1) &= f(m - 1, 1)
+\end{aligned}
+$$
+
+### Solving the Problem
+
+Having 2 parameters implies the solution can move in 2 dimensions, so the
+memoization array will be 2D.
+
+Other than that, the solution simply have more cases to take care of due
+to the edge cases from the extra dimension.
+
+```pseudocode title="Unique Paths to Corner"
+function unique_paths_to_corner(m: int, n: int) -> int {
+    // initialize memoization array
+    let dp = [...] of size (m, n)
+             one-based index
+
+    // calculate values
+    for i from 1 to m {
+        for j from 1 to n {
+            dp[i][j] = match (i, j) {
+                // base case
+                (1, 1) => 1,
+
+                // edge cases
+                (1, j) => dp[1][j - 1],
+                (i, 1) => dp[i - 1][1],
+
+                // recurrence case
+                (i, j) => dp[i - 1][j] + dp[i][j - 1],
+            }
+        }
+    }
+    
+    return dp[m][n]
+}
+```
+
+Time complexity: $O(mn)$
+
+Space complexity: $O(mn)$
+
+***video***
+
+### Simplifying the Solution
+
+You can omit the edge cases in code if you use a memoization array size
+of (m + 1, n + 1), with values initialized properly.
+
+```pseudocode title="Unique Paths to Corner - Simplified"
+function unique_paths_to_corner(m: int, n: int) -> int {
+    // initialize memoization array
+    let dp = [...] of size (m + 1, n + 1)
+             zero-based index
+             initialized to 0
+
+    // base case
+    dp[0][1] = 1
+
+    // calculate values
+    for i from 1 to m {
+        for j from 1 to n {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        }
+    }
+    
+    return dp[m][n]
+}
+```
+
+Time complexity: $O(mn)$
+
+Space complexity: $O(mn)$
+
+***video***
+
+### Space Optimization
+
+We can observe that we only need the value above and left of the current
+position to calculate the current value.
+
+We only move right on one row, and only move to the leftmost column when
+reaching the end of current row.
+
+This means we need to use each value from previous row, to construct each
+value in the next row right below.
+
+So, we can use a 1D array to store the values of the previous row, and
+overwrite the values with the next row as we calculate the value in the 
+next row right below.
+
+```pseudocode title="Unique Paths to Corner - Space Optimized"
+function unique_paths_to_corner(m: int, n: int) -> int {
+    // initialize memoization array
+    let dp = [...] of size n + 1
+             zero-based index
+             initialized to 0
+
+    // base case
+    dp[1] = 1
+
+    // calculate values
+    for i from 1 to m {
+        for j from 1 to n {
+            dp[j] = dp[j] + dp[j - 1]
+        }
+    }
+    
+    return dp[n]
+}
+```
+
+Time complexity: $O(mn)$
+
+Space complexity: $O(n)$
+
+***video***
+
+### Implementation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+For the implementation, we will directly start with the simplified version,
+since we need to use zero-based index in Python anyway.
+
+```python title="Unique Paths to Corner - Simplified"
+def uniquePathsToCorner(m, n):
+    # initialize memoization array
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # base case
+    dp[0][1] = 1
+
+    # calculate values
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+
+    return dp[m][n]
+```
+
+```python title="Unique Paths to Corner - Space Optimized"
+def uniquePathsToCorner(cost):
+    # initialize memoization array
+    dp = [0] * (n + 1)
+
+    # base case
+    dp[1] = 1
+
+    # calculate values
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            dp[j] = dp[j] + dp[j - 1]
+
+    return dp[n]
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+For the implementation, we will directly start with the simplified version,
+since we need to use zero-based index in C++ anyway.
+
+```cpp title="Unique Paths to Corner - Simplified"
+#include <vector>
+
+int unique_paths_to_corner(int m, int n) {
+    // initialize memoization array
+    std::vector<std::vector<int>> dp(
+        m + 1,
+        std::vector<int>(n + 1, 0)
+    );
+
+    // base case
+    dp[0][1] = 1;
+
+    // calculate values
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+
+    return dp[m][n];
+}
+```
+
+```cpp title="Unique Paths to Corner - Space Optimized"
+#include <vector>
+
+int unique_paths_to_corner(int m, int n) {
+    // initialize memoization array
+    std::vector<int> dp(n + 1, 0);
+
+    // base case
+    dp[1] = 1;
+
+    // calculate values
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            dp[j] = dp[j] + dp[j - 1];
+        }
+    }
+
+    return dp[n];
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+For the implementation, we will directly start with the simplified version,
+since we need to use zero-based index in Rust anyway.
+
+```rust title="Unique Paths to Corner - Simplified"
+fn unique_paths_to_corner(m: usize, n: usize) -> usize {
+    // initialize memoization array
+    let mut dp = vec![vec![0; n + 1]; m + 1];
+
+    // base case
+    dp[0][1] = 1;
+
+    // calculate values
+    for i in 1..=m {
+        for j in 1..=n {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+
+    dp[m][n]
+}
+```
+
+```rust title="Unique Paths to Corner - Space Optimized"
+fn unique_paths_to_corner(m: usize, n: usize) -> usize {
+    // initialize memoization array
+    let mut dp = vec![0; n + 1];
+
+    // base case
+    dp[1] = 1;
+
+    // calculate values
+    for i in 1..=m {
+        for j in 1..=n {
+            dp[j] = dp[j] + dp[j - 1];
+        }
+    }
+
+    dp[n]
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Related Topics
+
+LeetCode - Unique Paths: https://leetcode.com/problems/unique-paths/

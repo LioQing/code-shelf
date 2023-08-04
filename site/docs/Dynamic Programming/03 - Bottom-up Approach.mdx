@@ -55,17 +55,19 @@ We can then calculate the next values by adding the previous two values in the a
 
 ```pseudocode title="n-th Fibonacci Number with Bottom-up Approach"
 // fibonacci function
-function fib(n: int) -> int:
+function fib(n: int) -> int {
     // initialize memoization array
     let dp = [...] of size n + 1
     let dp[0] = 0
     let dp[1] = 1
 
     // calculate next values
-    for i from 2 to n:
+    for i from 2 to n {
         dp[i] = dp[i - 1] + dp[i - 2]
+    }
 
     return dp[n]
+}
 ```
 
 <VideoPlayer src={require('/video/dp/dp_03_03.mp4').default}>
@@ -83,22 +85,25 @@ Note that there is an exceptional case for $f(0)$.
 
 ```pseudocode title="n-th Fibonacci Number with Bottom-up Approach - Space Optimized"
 // fibonacci function
-function fib(n: int) -> int:
+function fib(n: int) -> int {
     // initialize base cases
     let prev = 0
     let curr = 1
 
     // exceptional case for fib(0)
-    if n == 0:
+    if n == 0 {
         return prev
+    }
 
     // calculate next values
-    for i from 2 to n:
+    for i from 2 to n {
         let next = prev + curr
         prev = curr
         curr = next
+    }
 
     return curr
+}
 ```
 
 <VideoPlayer src={require('/video/dp/dp_03_04.mp4').default}>
