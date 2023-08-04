@@ -28,6 +28,13 @@ Given:
 
 ```testcase
 Input: m = 3, n = 2
++---+---+
+| S |   |
++---+---+
+|   |   |
++---+---+
+|   | E |
++---+---+
 Output: 3
 ```
 There are three ways to go from top left to bottom right corner:
@@ -39,6 +46,13 @@ There are three ways to go from top left to bottom right corner:
 
 ```testcase
 Input: m = 3, n = 7
++---+---+---+---+---+---+---+
+| S |   |   |   |   |   |   |
++---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+
+|   |   |   |   |   |   | E |
++---+---+---+---+---+---+---+
 Output: 28
 ```
 
@@ -208,6 +222,33 @@ Time complexity: $O(mn)$
 Space complexity: $O(n)$
 
 ***video***
+
+import MultipleChoice from '@site/src/components/utils/MultipleChoice';
+
+:::interactive Checkpoint
+
+<MultipleChoice
+    options={[
+        'It depends on the level of nested loops',
+        'It is found by trials and errors',
+        'It is the number of parameters in the problem',
+        'It is the number of parameters in the recurrence relation',
+    ]}
+    answer={3}
+    explanation='
+        The number of parameters in the recurrence relation is the number of
+        parameters in the problem, they act like coordinates in the
+        memoization array to get the solution. Parameters in the problem
+        may be extra info needed for the problem, but not used to get the
+        solution.
+    '>
+
+How do we know what is the dimension of the memoization array (assume no space
+optimization) we need for the problem?
+
+</MultipleChoice>
+
+:::
 
 ### Implementation
 
