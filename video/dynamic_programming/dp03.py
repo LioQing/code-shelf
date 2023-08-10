@@ -12,6 +12,8 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from utils.btree import BTree, BNode
 from utils.sized_container import SizedContainer
+from utils.table import set_table_mobject
+
 
 class dp_03_01(manim.Scene):
     def construct(self):
@@ -44,14 +46,30 @@ class dp_03_01(manim.Scene):
                 value_label = manim.MathTex(f"{fib}")
                 value_label.move_to(fib_node.get_mobject())
 
-                self.play(manim.Transform(fib_node.get_mobject(), value_label), run_time=0.66)
+                self.play(
+                    manim.Transform(fib_node.get_mobject(), value_label), run_time=0.66
+                )
 
                 # Create return arrow
                 if fib_arrow is not None:
                     direction = 1 if fib_node is fib_parent.left else -1
                     return_arrow = manim.ArcBetweenPoints(
-                        start=(*rotate(fib_node.get_mobject().get_center(), fib_arrow.get_end(), manim.PI / 12 * direction), 0),
-                        end=(*rotate(fib_parent.get_mobject().get_center(), fib_arrow.get_start(), -manim.PI / 12 * direction), 0),
+                        start=(
+                            *rotate(
+                                fib_node.get_mobject().get_center(),
+                                fib_arrow.get_end(),
+                                manim.PI / 12 * direction,
+                            ),
+                            0,
+                        ),
+                        end=(
+                            *rotate(
+                                fib_parent.get_mobject().get_center(),
+                                fib_arrow.get_start(),
+                                -manim.PI / 12 * direction,
+                            ),
+                            0,
+                        ),
                         stroke_width=4,
                         angle=-manim.PI / 2 * direction,
                     )
@@ -70,7 +88,7 @@ class dp_03_01(manim.Scene):
                 reduce_and_show(1)
             else:
                 continue
-            
+
             # Reduction
             while len(stack) >= 3:
                 if isinstance(stack[-1], int) and isinstance(stack[-2], int):
@@ -81,7 +99,8 @@ class dp_03_01(manim.Scene):
 
         self.wait(3)
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
-    
+
+
 class dp_03_02(manim.Scene):
     def construct(self):
         config = {
@@ -105,10 +124,14 @@ class dp_03_02(manim.Scene):
                 if arrow is not None:
                     start, end = arrow.get_start_and_end()
                     arrow.put_start_and_end_on(end, start)
-            
+
             if node.left_arrow is not None and node.right_arrow is not None:
                 self.play(
-                    *(manim.Create(arrow) for arrow in [node.left_arrow, node.right_arrow] if arrow is not None),
+                    *(
+                        manim.Create(arrow)
+                        for arrow in [node.left_arrow, node.right_arrow]
+                        if arrow is not None
+                    ),
                     run_time=0.34,
                 )
 
@@ -123,7 +146,9 @@ class dp_03_02(manim.Scene):
             def show_value(value):
                 value_label = manim.MathTex(f"{value}")
                 value_label.move_to(node.get_mobject())
-                self.play(manim.Transform(node.get_mobject(), value_label), run_time=0.66)
+                self.play(
+                    manim.Transform(node.get_mobject(), value_label), run_time=0.66
+                )
                 node.mobject = value_label
 
             # Base cases
@@ -132,12 +157,15 @@ class dp_03_02(manim.Scene):
             elif node.label == "f(1)":
                 show_value(1)
             else:
-                value = int(node.left.get_mobject().tex_string) + int(node.right.get_mobject().tex_string)
+                value = int(node.left.get_mobject().tex_string) + int(
+                    node.right.get_mobject().tex_string
+                )
                 show_value(value)
-        
+
         self.wait(3)
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
-    
+
+
 class dp_03_03(manim.Scene):
     def construct(self):
         # Initialize table from 0 to 4 representing fib(0) to fib(4)
@@ -150,10 +178,11 @@ class dp_03_03(manim.Scene):
                     height=0,
                     mobject=manim.MathTex(f"f({i})"),
                 )
-                for i in range(5)],
+                for i in range(5)
+            ],
             include_outer_lines=True,
         )
-        
+
         # Hide all values
         for i in range(2, 7):
             table.get_entries((2, i)).set_opacity(0)
@@ -183,7 +212,11 @@ class dp_03_03(manim.Scene):
             hbuff = 0.4
 
             def arrow_pos(entry: manim.VMobject, direction: np.ndarray = manim.RIGHT):
-                return entry.get_center() + (entry.get_width() + hbuff) * direction / 2 + (entry.get_height() + vbuff) * manim.DOWN / 2
+                return (
+                    entry.get_center()
+                    + (entry.get_width() + hbuff) * direction / 2
+                    + (entry.get_height() + vbuff) * manim.DOWN / 2
+                )
 
             arrow_1 = manim.CurvedArrow(
                 start_point=arrow_pos(sec_last),
@@ -198,12 +231,16 @@ class dp_03_03(manim.Scene):
                 stroke_width=4,
             )
 
-            self.play(manim.AnimationGroup(
-                manim.AnimationGroup(manim.Indicate(sec_last), manim.Indicate(last)),
-                manim.AnimationGroup(manim.Create(arrow_1), manim.Create(arrow_2)),
-                lag_ratio=0.5,
-                run_time=1.5,
-            ))
+            self.play(
+                manim.AnimationGroup(
+                    manim.AnimationGroup(
+                        manim.Indicate(sec_last), manim.Indicate(last)
+                    ),
+                    manim.AnimationGroup(manim.Create(arrow_1), manim.Create(arrow_2)),
+                    lag_ratio=0.5,
+                    run_time=1.5,
+                )
+            )
 
             # Write recursive case
             value = values[i - 3] + values[i - 2]
@@ -221,6 +258,7 @@ class dp_03_03(manim.Scene):
         self.wait(2)
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
 
+
 class dp_03_04(manim.Scene):
     def construct(self):
         # Initialize table
@@ -229,7 +267,11 @@ class dp_03_04(manim.Scene):
                 ["f(0)", "f(1)", "f(2)"],
                 ["0", "1", "1"],
             ],
-            col_labels=[manim.Tex("prev"), manim.Tex("curr"), manim.MathTex(r"\text{next} = \text{prev} + \text{curr}")],
+            col_labels=[
+                manim.Tex("prev"),
+                manim.Tex("curr"),
+                manim.MathTex(r"\text{next} = \text{prev} + \text{curr}"),
+            ],
             element_to_mobject=lambda el: SizedContainer(
                 width=1,
                 height=1,
@@ -252,13 +294,15 @@ class dp_03_04(manim.Scene):
 
         # Show col labels
         self.play(vgroup.animate.move_to(original_position))
-        self.play(manim.AnimationGroup(
-            manim.Create(table.get_col_labels()),
-            manim.Create(table.get_horizontal_lines()),
-            manim.Create(table.get_vertical_lines()),
-            lag_ratio=0.5,
-            run_time=1.5,
-        ))
+        self.play(
+            manim.AnimationGroup(
+                manim.Create(table.get_col_labels()),
+                manim.Create(table.get_horizontal_lines()),
+                manim.Create(table.get_vertical_lines()),
+                lag_ratio=0.5,
+                run_time=1.5,
+            )
+        )
         self.wait(2)
 
         # Indicate the two values being added and show next value
@@ -271,20 +315,22 @@ class dp_03_04(manim.Scene):
         next = [prev[0] + curr[0], table.get_entries((2, 3)), table.get_entries((3, 3))]
         for i in range(3, 6):
             # Indicate the two value and show next value
-            self.play(manim.AnimationGroup(
+            self.play(
                 manim.AnimationGroup(
-                    manim.Indicate(prev[1]),
-                    manim.Indicate(prev[2]),
-                    manim.Indicate(curr[1]),
-                    manim.Indicate(curr[2]),
-                ),
-                manim.AnimationGroup(
-                    manim.Write(next[1]),
-                    manim.Write(next[2]),
-                ),
-                lag_ratio=0.5,
-                run_time=1.5,
-            ))
+                    manim.AnimationGroup(
+                        manim.Indicate(prev[1]),
+                        manim.Indicate(prev[2]),
+                        manim.Indicate(curr[1]),
+                        manim.Indicate(curr[2]),
+                    ),
+                    manim.AnimationGroup(
+                        manim.Write(next[1]),
+                        manim.Write(next[2]),
+                    ),
+                    lag_ratio=0.5,
+                    run_time=1.5,
+                )
+            )
             self.wait()
 
             # Move and fade out
@@ -333,7 +379,7 @@ class dp_03_04(manim.Scene):
             )
             next[1].move_to(positions[0][2])
             next[2].move_to(positions[1][2])
-        
+
         self.wait(2)
 
         # Fade out other things except f(4) and its value
@@ -354,26 +400,6 @@ class dp_03_04(manim.Scene):
         # Fade out everything
         self.play(*[manim.FadeOut(mob) for mob in self.mobjects])
 
-def set_table_mobject(table: manim.Table, pos: Sequence[int], mobject: manim.VMobject):
-    """
-    Set the mobject at the given position in the table.
-
-    Arguments:
-        table: the table to set the mobject in
-        pos: the position of the mobject in the table, array of shape (2,)
-        mobject: the mobject to set
-    """
-    mobject.move_to(table.get_entries(pos))
-    if (
-        table.row_labels is not None
-        and table.col_labels is not None
-        and table.top_left_entry is None
-    ):
-        index = len(table.mob_table[0]) * (pos[0] - 1) + pos[1] - 2
-        table.elements[index] = mobject
-    else:
-        index = len(table.mob_table[0]) * (pos[0] - 1) + pos[1] - 1
-        table.elements[index] = mobject
 
 def rotate(origin: Sequence, point: Sequence, angle: float) -> Tuple[float, float]:
     """
@@ -391,12 +417,19 @@ def rotate(origin: Sequence, point: Sequence, angle: float) -> Tuple[float, floa
     qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
     return qx, qy
 
-def dfs_groups(tree: BTree) -> Generator[Tuple[
-    manim.VGroup,
-    BNode,
-    manim.Line | None,
-    BNode | None, 
-], None, None]:
+
+def dfs_groups(
+    tree: BTree,
+) -> Generator[
+    Tuple[
+        manim.VGroup,
+        BNode,
+        manim.Line | None,
+        BNode | None,
+    ],
+    None,
+    None,
+]:
     """
     Depth-first search (DFS) on a binary tree.
 
@@ -424,13 +457,14 @@ def dfs_groups(tree: BTree) -> Generator[Tuple[
             parent_arrow[node] if node != tree.root else None,
             parent[node] if node != tree.root else None,
         )
-    
+
         if node.left is not None:
             parent_arrow[node.left] = node.get_left_arrow()
             parent[node.left] = node
         if node.right is not None:
             parent_arrow[node.right] = node.get_right_arrow()
             parent[node.right] = node
+
 
 def build_fib_tree(n: int) -> BNode:
     """
@@ -447,7 +481,6 @@ def build_fib_tree(n: int) -> BNode:
         return BNode(f"f({n})")
     else:
         root = BNode(f"f({n})")
-        root.left = build_fib_tree(n-1)
-        root.right = build_fib_tree(n-2)
+        root.left = build_fib_tree(n - 1)
+        root.right = build_fib_tree(n - 2)
         return root
-    

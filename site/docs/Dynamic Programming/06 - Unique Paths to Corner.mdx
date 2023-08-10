@@ -29,11 +29,11 @@ Given:
 ```testcase
 Input: m = 3, n = 2
 +---+---+
-| S |   |
+| ◯ |   |
 +---+---+
 |   |   |
 +---+---+
-|   | E |
+|   | ✕ |
 +---+---+
 Output: 3
 ```
@@ -47,11 +47,11 @@ There are three ways to go from top left to bottom right corner:
 ```testcase
 Input: m = 3, n = 7
 +---+---+---+---+---+---+---+
-| S |   |   |   |   |   |   |
+| ◯ |   |   |   |   |   |   |
 +---+---+---+---+---+---+---+
 |   |   |   |   |   |   |   |
 +---+---+---+---+---+---+---+
-|   |   |   |   |   |   | E |
+|   |   |   |   |   |   | ✕ |
 +---+---+---+---+---+---+---+
 Output: 28
 ```
@@ -147,7 +147,11 @@ Time complexity: $O(mn)$
 
 Space complexity: $O(mn)$
 
-***video***
+<VideoPlayer src={require('/video/dp/dp_06_01.mp4').default}>
+
+The solution to the unique paths to corner problem with $m = 3$ and $n = 7$.
+
+</VideoPlayer>
 
 ### Simplifying the Solution
 
@@ -179,7 +183,11 @@ Time complexity: $O(mn)$
 
 Space complexity: $O(mn)$
 
-***video***
+<VideoPlayer src={require('/video/dp/dp_06_02.mp4').default}>
+
+The simplified solution to the unique paths to corner problem with $m = 3$ and $n = 7$.
+
+</VideoPlayer>
 
 ### Space Optimization
 
@@ -221,7 +229,11 @@ Time complexity: $O(mn)$
 
 Space complexity: $O(n)$
 
-***video***
+<VideoPlayer src={require('/video/dp/dp_06_03.mp4').default}>
+
+The space optimized solution to the unique paths to corner problem with $m = 3$ and $n = 7$.
+
+</VideoPlayer>
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 

@@ -3,7 +3,5 @@
         "editor.tabSize": 2
     },
     "editor.formatOnSave": true,
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    }, // optional
+    "editor.defaultFormatter": "ms-python.black-formatter",
 }
