@@ -1,0 +1,50 @@
+---
+description: With the given operations, minimize the number of operations to make 2 strings equal.
+---
+
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
+
+<head>
+  <title>Edit Distance | Dynamic Programming</title>
+</head>
+
+## Problem
+
+This is a classic problem of dynamic programming to match 2 strings given 
+a set of operations.
+
+### Problem Description
+
+Given 2 strings `s1` and `s2` and a set of operations:
+
+- Insert a character
+- Delete a character
+- Replace a character
+
+Find the minimum number of operations to make `s1` and `s2` equal.
+
+Given:
+- `0 <= s1.length, s2.length`
+
+### Testcases
+
+```testcase
+Input: s1 = "horse", s2 = "ros"
+Output: 3
+```
+The operations are:
+1. horse -> rorse (replace 'h' with 'r')
+2. rorse -> rose (delete 'r')
+3. rose -> ros (delete 'e')
+
+```testcase
+Input: s1 = "intention", s2 = "execution"
+Output: 5
+```
+The operations are:
+1. intention -> inention (delete 't')
+2. inention -> enention (replace 'i' with 'e')
+3. enention -> exention (replace 'n' with 'x')
+4. exention -> exection (replace 'n' with 'c')
+5. exection -> execution (insert 'u')
+
