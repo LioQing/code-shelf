@@ -1,4 +1,6 @@
 import React from 'react';
+import clsx from 'clsx';
+import styles from './styles.module.css';
 
 interface TableProps extends React.HTMLProps<HTMLTableElement> {
   values: React.ReactNode[][];
@@ -33,7 +35,7 @@ const TableBody = ({ values, rowHeaders }: { values: React.ReactNode[][], rowHea
   );
 }
 
-const Table = ({ values, columnHeaders, rowHeaders }: TableProps) => {
+const Table = ({ values, columnHeaders, rowHeaders, className, ...tableProps }: TableProps) => {
   // Props validation
   const colCount = columnHeaders ? columnHeaders.length : values[0].length;
   if (values.some(row => row.length !== colCount)) {
@@ -45,12 +47,16 @@ const Table = ({ values, columnHeaders, rowHeaders }: TableProps) => {
     throw new Error('All rows must have the same number of columns');
   }
 
+  const classNames = className ? clsx(styles.table, className) : styles.table;
+
   // Render
   return (
-    <table>
-      {columnHeaders && <TableHeader values={columnHeaders} />}
-      <TableBody values={values} rowHeaders={rowHeaders} />
-    </table>
+    <div className={styles.scroller}>
+      <table className={classNames} {...tableProps}>
+        {columnHeaders && <TableHeader values={columnHeaders} />}
+        <TableBody values={values} rowHeaders={rowHeaders} />
+      </table>
+    </div>
   );
 }
 

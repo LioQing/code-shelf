@@ -71,7 +71,7 @@ we can:
 
 Similar to the number of ways up the stair problem, we are counting the
 number of ways to reach the bottom right corner. So, the relation is
-a summation again.
+the summation of the number of unique paths to the above and left cell.
 
 Let $f(m, n)$ be the number of unique paths to $(m, n)$ from $(1, 1)$:
 
@@ -152,6 +152,25 @@ Space complexity: $O(mn)$
 The solution to the unique paths to corner problem with $m = 3$ and $n = 7$.
 
 </VideoPlayer>
+
+import Dp06 from '@site/src/components/interactives/dp/dp_06';
+import TextInput from '@site/src/components/utils/TextInput';
+
+:::interactive Try it out
+
+<Dp06>
+
+$m =\:$
+
+<TextInput />
+
+, $n =\:$
+
+<TextInput />
+
+</Dp06>
+
+:::
 
 ### Simplifying the Solution
 

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import styles from './styles.module.css';
 import Table from '@site/src/components/utils/Table';
 import { TextInputState } from '@site/src/components/utils/TextInput';
+import { isComponent } from '@site/src/utils';
 
-interface MinCostClimbingStairsProps {
+interface Dp05Props {
   children?: React.ReactNode;
 }
 
-const isTextInput = (child: React.ReactNode) => React.isValidElement(child) && (child as React.ReactElement).props['mdxType'] === 'TextInput';
-
-const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
+const Dp05 = ({ children }: Dp05Props) => {
   const childrenArray = React.Children.toArray(children);
 
   const [costTextInput, setCostTextInput] = useState('1,5,2,4,3');
@@ -18,23 +17,23 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
 
   const textInput = childrenArray
     .map((child, index) => {
-      if (isTextInput(child)) {
+      if (isComponent(child, 'TextInput')) {
         const newProps = {
           key: index,
           value: costTextInput,
           state: inputState,
-          className: styles['text-input'],
           onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
             setCostTextInput(event.target.value);
 
             // comma separated list of integers (may have spaces)
-            const regex = /^\s*(\d+\s*,\s*)*\d+\s*$/
-            if (regex.test(event.target.value)) {
-              setCost(event.target.value.split(',').map(v => parseInt(v.trim())));
-              setInputState(TextInputState.Default);
-            } else {
+            const regex = /^\s*([-+]?\d+\s*,\s*)*\d+\s*$/
+            if (!regex.test(event.target.value)) {
               setInputState(TextInputState.Incorrect);
+              return;
             }
+
+            setCost(event.target.value.split(',').map(v => parseInt(v.trim())));
+            setInputState(TextInputState.Default);
           },
           onBlur: () => {
             setCostTextInput(cost.join(','));
@@ -62,9 +61,9 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
 
   return (
     <>
-      <div className={styles["input-prompt"]}>
+      <div className={styles['input-prompt']}>
         {childrenArray.map((child, index) => {
-          if (isTextInput(child)) {
+          if (isComponent(child, 'TextInput')) {
             return textInput;
           }
           return <span key={index}>{child}</span>;
@@ -79,4 +78,4 @@ const MinCostClimbingStairs = ({ children }: MinCostClimbingStairsProps) => {
   );
 };
 
-export default MinCostClimbingStairs;
+export default Dp05;

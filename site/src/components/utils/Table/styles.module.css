@@ -1,0 +1,8 @@
+.scroller {
+  overflow-x: auto;
+}
+
+.table {
+  display: table;
+  width: 100%;
+}

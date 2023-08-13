@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import styles from './styles.module.css';
 import { BlankProps } from '@site/src/components/utils/Blank';
 import Button from '@site/src/components/utils/Button';
+import { isComponent } from '@site/src/utils';
 
 interface FillInTheBlankProps {
   explanation: string;
   children?: React.ReactNode;
 }
-
-const isBlank = (child: React.ReactNode) => React.isValidElement(child) && (child as React.ReactElement).props['mdxType'] === 'Blank';
 
 const isCorrect = (answer: string, blank: React.ReactElement<BlankProps>) => answer.trim() === blank.props.answer;
 
@@ -17,7 +16,7 @@ const FillInTheBlank = ({ explanation, children }: FillInTheBlankProps) => {
 
   const [answers, setAnswers] = useState<{ [id: string]: string }>(Object.fromEntries(childrenArray
     .map((child, index) => {
-      if (isBlank(child)) {
+      if (isComponent(child, 'Blank')) {
         return [index.toString(), ''];
       }
     })
@@ -28,7 +27,7 @@ const FillInTheBlank = ({ explanation, children }: FillInTheBlankProps) => {
 
   const blanks = Object.fromEntries(childrenArray
     .map((child, index) => {
-      if (isBlank(child)) {
+      if (isComponent(child, 'Blank')) {
         const newProps = {
           key: index,
           value: answers[index.toString()],
@@ -50,7 +49,7 @@ const FillInTheBlank = ({ explanation, children }: FillInTheBlankProps) => {
   const Explanation = () => {
     const answerResults = childrenArray
       .map((child, index) => {
-        if (isBlank(child)) {
+        if (isComponent(child, 'Blank')) {
           return isCorrect(answers[index.toString()], child as React.ReactElement<BlankProps>);
         }
       })
@@ -72,7 +71,7 @@ const FillInTheBlank = ({ explanation, children }: FillInTheBlankProps) => {
     if (checked) {
       setAnswers(Object.fromEntries(childrenArray
         .map((child, index) => {
-          if (isBlank(child)) {
+          if (isComponent(child, 'Blank')) {
             return [index.toString(), ''];
           }
         })
