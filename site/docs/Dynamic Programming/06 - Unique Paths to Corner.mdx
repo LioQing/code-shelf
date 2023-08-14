@@ -133,7 +133,7 @@ function unique_paths_to_corner(m: int, n: int) -> int {
                 (1, j) => dp[1][j - 1],
                 (i, 1) => dp[i - 1][1],
 
-                // recurrence case
+                // recursive case
                 (i, j) => dp[i - 1][j] + dp[i][j - 1],
             }
         }

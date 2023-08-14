@@ -4,7 +4,7 @@ description: With the given operations, minimize the number of operations to mak
 
 import VideoPlayer from '@site/src/components/utils/VideoPlayer';
 
-<head>
+<head> 
   <title>Edit Distance | Dynamic Programming</title>
 </head>
 
@@ -15,21 +15,24 @@ a set of operations.
 
 ### Problem Description
 
-Given 2 strings `s1` and `s2` and a set of operations:
+Given 2 strings $x = [x_1, x_2, ..., x_m]$ and $y = [y_1, y_2, ..., y_n]$ and a set of operations:
 
 - Insert a character
 - Delete a character
 - Replace a character
 
-Find the minimum number of operations to make `s1` and `s2` equal.
+Find the minimum number of operations to make $x$ and $y$ equal.
 
 Given:
-- `0 <= s1.length, s2.length`
+- `0 <= m, n`
+    - `m = 0 => x = ""`
+    - `n = 0 => y = ""`
+- `x` and `y` consist of English letters and digits.
 
 ### Testcases
 
 ```testcase
-Input: s1 = "horse", s2 = "ros"
+Input: x = "horse", y = "ros"
 Output: 3
 ```
 The operations are:
@@ -38,7 +41,7 @@ The operations are:
 3. rose -> ros (delete 'e')
 
 ```testcase
-Input: s1 = "intention", s2 = "execution"
+Input: x = "intention", y = "execution"
 Output: 5
 ```
 The operations are:
@@ -48,3 +51,237 @@ The operations are:
 4. exention -> exection (replace 'n' with 'c')
 5. exection -> execution (insert 'u')
 
+---
+
+## Solution
+
+### Forming the Recurrence Relation
+
+The subproblems depends on what operation we 
+applied to the previous characters.
+
+And apart from the 3 operations given, we must not
+overlook the possibility of not applying any operation.
+
+With this in mind, there are a total of 7 subproblems
+when we are at $x_m$ and $y_n$:
+
+- From $x_{m-1}$ and $y_{n-1}$, apply no operation.
+- From $x_{m-1}$ and $y_n$, insert a character in front of $y_n$ to match $x_{m-1}$.
+- From $x_m$ and $y_{n-1}$, insert a character in front of $x_m$ to match $y_{n-1}$.
+- From $x_{m-1}$ and $y_n$, delete $x_{m-1}$ to avoid mismatch with $y_n$.
+- From $x_m$ and $y_{n-1}$, delete $y_{n-1}$ to avoid mismatch with $x_m$.
+- At $x_{m-1}$ and $y_{n-1}$, replace $x_{m-1}$ to match $y_{n-1}$.
+- At $x_{m-1}$ and $y_{n-1}$, replace $y_{n-1}$ to match $x_{m-1}$.
+
+But these are not what we are looking for. For example,
+replacing $x_{m-1}$ to match $y_{n-1}$, and replacing
+$y_{n-1}$ to match $x_{m-1}$ are actually the same.
+
+Therefore, the actual subproblems are the following 3:
+
+- From $x_{m-1}$ and $y_{n-1}$, either:
+    - Apply no operation.
+    - Replace one to match the other.
+- From $x_{m-1}$ and $y_n$, either:
+    - Insert a character in front of $y_n$ to match $x_{m-1}$.
+    - Delete $x_{m-1}$ to avoid mismatch with $y_n$.
+- From $x_m$ and $y_{n-1}$, either:
+    - Insert a character in front of $x_m$ to match $y_{n-1}$.
+    - Delete $y_{n-1}$ to avoid mismatch with $x_m$.
+
+:::info Match One String to The Other
+
+Take a closer look at the subproblems, we can see that
+in fact we can choose to always apply operations to only
+one of the strings to match the others.
+
+:::
+
+The relation is a bit more complicated in this problem,
+because we cannot apply no operation to the subproblem if 
+$x_{m-1}$ and $y_{n-1}$ are not matched.
+
+We have to find the minimum of the three operations if they are
+not matching, and increase the operation count by 1.
+
+As a result, let $f(m, n)$ be the minimum number of operations
+to make $[x_1, x_2, ..., x_m]$ and $[y_1, y_2, ..., y_n]$ equal:
+
+$$
+f(m, n) = \begin{cases}
+
+f(m - 1, n - 1) & \text{if } x_{m-1} = y_{n-1} \\
+
+1 + \min \begin{cases}
+f(m - 1, n) \\
+f(m, n - 1) \\
+f(m - 1, n - 1)
+\end{cases} & \text{otherwise}
+
+\end{cases}
+$$
+
+### Base Cases
+
+The base case is simpiy when $x$ and $y$ are empty strings:
+
+$$
+f(0, 0) = 0
+$$
+
+### Edge Cases
+
+The edge cases happen when one of the string is empty,
+some of the recursive cases will be invalid.
+
+In this case, we will either delete all of the extra 
+characters of the non-empty string, or insert all of The
+non-empty string's character to the empty string.
+
+$$
+\begin{aligned}
+f(m, 0) &= f(m - 1, 0) \\
+f(0, n) &= f(0, n - 1)
+\end{aligned}
+$$
+
+### Solving the Problem
+
+We only need to implement the solution according to the 
+recurrence relation.
+
+```pseudocode title="Edit Distance"
+function edit_distance(x: str, y: str) -> int {
+    // the problem sizes
+    let m = x.length
+    let n = y.length
+
+    // initialize memoization array
+    let dp = [...] of size (m + 1, n + 1)
+             zero-based index
+    
+    // calculate values
+    for i from 0 to m {
+        for j from 0 to n {
+            dp[i][j] = match (i, j) {
+                // base case
+                (0, 0) => 0,
+
+                // edge cases
+                (i, 0) => dp[i - 1][0],
+                (0, j) => dp[0][j - 1],
+
+                // recursive cases
+                (i, j) if x[i - 1] == y[j - 1] => dp[i - 1][j - 1],
+                (i, j) => 1 + min(
+                    dp[i - 1][j],
+                    dp[i][j - 1],
+                    dp[i - 1][j - 1],
+                ),
+            }
+        }
+    }
+
+    return dp[m][n]
+}
+```
+
+Time complexity: $O(mn)$
+
+Space complexity: $O(mn)$
+
+***video***
+
+### Space Optimization
+
+In comparison to the unique paths to corner problem,
+which subproblems only consist of the top value
+and the left value
+
+This problem requires the top value, the left value,
+and the top left value.
+
+If we use the 1D array like the unique paths to
+corner problem, the top left value will already
+overwritten by the left value.
+
+So the solution is to use another variable to store
+the top value of current value for the right value
+to as we move to the right.
+
+```pseudocode title="Edit Distance - Space Optimized"
+function edit_distance(x: str, y: str) -> int {
+    // the problem sizes
+    let m = x.length
+    let n = y.length
+
+    // initialize memoization array
+    let dp = [...] of size n + 1
+             zero-based index
+             initialized to 0
+
+    // top left variable
+    let top_left = 0
+    
+    // calculate values
+    for i from 0 to m {
+        for j from 0 to n {
+            // store the top left value
+            top_left = dp[j]
+
+            dp[j] = match (i, j) {
+                // base case
+                (0, 0) => 0,
+
+                // edge cases
+                (i, 0) => dp[0],
+                (0, j) => dp[j - 1],
+
+                // recursive cases
+                (i, j) if x[i - 1] == y[j - 1] => top_left,
+                (i, j) => 1 + min(
+                    dp[j],
+                    dp[j - 1],
+                    top_left,
+                ),
+            }
+        }
+    }
+
+    return dp[n]
+}
+```
+
+Time complexity: $O(mn)$
+
+Space complexity: $O(n)$
+
+***video***
+
+### Implementation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+</TabItem>
+
+</Tabs>
+
+---
+
+## Related Topics
+
+LeetCode - Edit Distance: https://leetcode.com/problems/edit-distance/
