@@ -8,11 +8,11 @@ interface TableProps extends React.HTMLProps<HTMLTableElement> {
   rowHeaders?: React.ReactNode[];
 }
 
-const TableHeader = ({ values }: { values: React.ReactNode[] }) => {
+const TableHeader = ({ hasRow, values }: { hasRow: boolean, values: React.ReactNode[] }) => {
   return (
     <thead>
       <tr>
-        {values.map((value, index) => (
+        {(hasRow ? ['' as React.ReactNode] : []).concat(values).map((value, index) => (
           <th key={index}>{value}</th>
         ))}
       </tr>
@@ -53,7 +53,9 @@ const Table = ({ values, columnHeaders, rowHeaders, className, ...tableProps }: 
   return (
     <div className={styles.scroller}>
       <table className={classNames} {...tableProps}>
-        {columnHeaders && <TableHeader values={columnHeaders} />}
+        {columnHeaders
+          && <TableHeader hasRow={rowHeaders !== undefined} values={columnHeaders} />
+        }
         <TableBody values={values} rowHeaders={rowHeaders} />
       </table>
     </div>
