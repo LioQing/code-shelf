@@ -75,6 +75,7 @@ const InteractiveTable = ({
       </div>
 
       <Table
+        className={styles['interactive-table']}
         values={values}
         columnHeaders={getColumnHeaders?.(lastValidText)}
         rowHeaders={getRowHeaders?.(lastValidText)}

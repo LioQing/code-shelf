@@ -278,6 +278,32 @@ Space complexity: $O(n)$
 
 ***video***
 
+import MultipleChoice from '@site/src/components/utils/MultipleChoice';
+
+:::interactive Checkpoint
+
+<MultipleChoice
+    options={[
+        'If there are n strings, the time complexity and space comlpexity will remain the same',
+        'There are 7 subproblems',
+        'There can be multiple solutions to the same problem',
+        'Both strings have to be editable to solve the problem'
+    ]}
+    answer={2}
+    explanation='
+        There can be multiple solution for one edit distance problem,
+        as long as the number of operations are the same and it follows
+        the rules of the operations. For n strings, the time complexity
+        and space complexity will be multiplied by length of each string.
+        Only one of the strings need to be editable to solve the problem.
+    '>
+
+Which of the following statements are true about the edit distance problem?
+
+</MultipleChoice>
+
+:::
+
 ### Implementation
 
 import Tabs from '@theme/Tabs';
