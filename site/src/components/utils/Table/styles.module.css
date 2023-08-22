@@ -6,3 +6,15 @@
   display: table;
   width: 100%;
 }
+
+.table thead {
+  background-color: var(--ifm-table-background);
+}
+
+.table tr:nth-child(even) {
+  background: var(--ifm-table-background);
+}
+
+.table th {
+  background-color: var(--ifm-table-stripe-background);
+}

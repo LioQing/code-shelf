@@ -191,7 +191,11 @@ Time complexity: $O(mn)$
 
 Space complexity: $O(mn)$
 
-***video***
+<VideoPlayer src={require('/video/dp/dp_07_01.mp4').default}>
+
+The solution to the edit distance problem with $x = \text{sunny}$ and $y = \text{snowy}$.
+
+</VideoPlayer>
 
 import Dp07 from '@site/src/components/interactives/dp/dp_07';
 import TextInput from '@site/src/components/utils/TextInput';
@@ -247,7 +251,7 @@ function edit_distance(x: str, y: str) -> int {
     for i from 0 to m {
         for j from 0 to n {
             // store the top left value
-            top_left = dp[j]
+            let new_top_left = dp[j]
 
             dp[j] = match (i, j) {
                 // base case
@@ -265,6 +269,9 @@ function edit_distance(x: str, y: str) -> int {
                     top_left,
                 ),
             }
+
+            // update the top left value
+            top_left = new_top_left
         }
     }
 
@@ -276,7 +283,11 @@ Time complexity: $O(mn)$
 
 Space complexity: $O(n)$
 
-***video***
+<VideoPlayer src={require('/video/dp/dp_07_02.mp4').default}>
+
+The space optimized solution to the edit distance problem with $x = \text{sunny}$ and $y = \text{snowy}$.
+
+</VideoPlayer>
 
 import MultipleChoice from '@site/src/components/utils/MultipleChoice';
 
@@ -364,7 +375,7 @@ def editDistance(x, y):
     for i in range(m + 1):
         for j in range(n + 1):
             # store the top left value
-            top_left = dp[j]
+            new_top_left = dp[j]
 
             if i == 0 and j == 0:
                 # base case
@@ -385,6 +396,9 @@ def editDistance(x, y):
                     dp[j - 1],
                     top_left,
                 )
+
+            # update the top left value
+            top_left = new_top_left
 
     return dp[n]
 ```
@@ -448,7 +462,7 @@ int edit_distance(const std::string& x, const std::string& y) {
     for (std::size_t i = 0; i <= m; ++i) {
         for (std::size_t j = 0; j <= n; ++j) {
             // store the top left value
-            top_left = dp[j];
+            int new_top_left = dp[j];
 
             if (i == 0 && j == 0) {
                 // base case
@@ -470,6 +484,9 @@ int edit_distance(const std::string& x, const std::string& y) {
                     top_left,
                 });
             }
+
+            // update the top left value
+            top_left = new_top_left;
         }
     }
 
@@ -510,7 +527,7 @@ fn edit_distance(x: &str, y: &str) -> usize {
                         dp[i - 1][j - 1],
                     ),
                 ),
-            }
+            };
         }
     }
 
@@ -534,7 +551,7 @@ fn edit_distance(x: &str, y: &str) -> usize {
     for i in 0..=m {
         for j in 0..=n {
             // store the top left value
-            top_left = dp[j];
+            let new_top_left = dp[j];
 
             dp[j] = match (i, j) {
                 // base case
@@ -553,7 +570,10 @@ fn edit_distance(x: &str, y: &str) -> usize {
                         top_left,
                     ),
                 ),
-            }
+            };
+
+            // update the top left value
+            top_left = new_top_left;
         }
     }
 

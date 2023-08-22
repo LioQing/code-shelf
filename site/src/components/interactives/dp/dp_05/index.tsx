@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import styles from './styles.module.css';
 import InteractiveTable from '@site/src/components/utils/InteractiveTable';
 
 interface Dp05Props {
@@ -38,8 +39,8 @@ const Dp05 = ({ children }: Dp05Props) => {
           const addStrings = costs.map((v, i) => (v + values[i]).toString()).concat(['']);
           const costStrings = costs.map(c => c.toString()).concat(['']);
 
-          const pathValues = values.map((v, i) => path[i] ? <u>{v}</u> : v);
-          const pathAdd = addStrings.map((v, i) => path[i] ? <u>{v}</u> : v);
+          const pathValues = values.map((v, i) => path[i] ? <b className={styles.path}>{v}</b> : v);
+          const pathAdd = addStrings.map((v, i) => path[i] ? <b className={styles.path}>{v}</b> : v);
 
           return [costStrings, pathValues, pathAdd];
         }}
@@ -49,7 +50,7 @@ const Dp05 = ({ children }: Dp05Props) => {
       />
       <div>
         <p>
-          Underlined values forms the path of the minimum cost to reach that step.
+          Green bold values forms the path of the minimum cost to reach that step.
         </p>
       </div>
     </>

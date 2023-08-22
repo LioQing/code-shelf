@@ -39,6 +39,7 @@ article {
   --my-checkpoint-content-margin: 1em;
   --my-video-text-font-size: 0.8rem;
   --my-multimedia-content-margin: 2rem;
+  --my-interactive-correct-font-color: var(--ifm-color-success-darker);
 }
 
 .alert--primary {
@@ -62,6 +63,7 @@ article {
 
   --my-negative-overlay: rgba(0, 0, 0, 0.1);
   --my-negative-overlay-highlight: rgba(0, 0, 0, 0.2);
+  --my-interactive-correct-font-color: var(--ifm-color-success-lighter);
 }
 
 [data-theme='dark']

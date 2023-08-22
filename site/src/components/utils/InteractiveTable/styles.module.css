@@ -12,18 +12,8 @@
   margin: 0.2rem;
 }
 
-.interactive-table tr:nth-child(even) {
-  background: transparent;
-}
-
-.interactive-table thead {
-  background: transparent;
-}
-
 .interactive-table th {
   padding: 0.4rem;
-  background: transparent;
-  background: #11111111;
 }
 
 .interactive-table td {
