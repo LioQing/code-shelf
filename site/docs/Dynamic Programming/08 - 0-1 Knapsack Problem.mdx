@@ -1,0 +1,210 @@
+---
+description: Knapsack problem involves resource allocation to maximize the profit.
+---
+
+import VideoPlayer from '@site/src/components/utils/VideoPlayer';
+
+<head> 
+  <title>0-1 Knapsack Problem | Dynamic Programming</title>
+</head>
+
+## Problem
+
+This is a type of problem where the goal is to maximize the profit
+given a fixed-size capacity and a set of items with their weights and values.
+
+### Problem Description
+
+You are given a knapsack with a maximum weight capacity of $W$ and $n$ items
+$V = \{(w_1, v_1), (w_2, v_2), ..., (w_n, v_n)\}$ where $w_i$ is the
+weight of the $i$-th item and $v_i$ is the value of the $i$-th item.
+
+You have to maximize the value of the knapsack by choosing some of the items
+such that the total weight of the chosen items is less than or equal to $W$.
+
+You either not choose an item, or choose it once.
+
+Given:
+- `0 <= W`
+- `0 <= n`
+- `0 <= w[i]`
+
+### Testcases
+
+```testcase
+Input: W = 5, V = { (2, 20), (1, 10), (4, 30), (3, 15) }
+Output: 40
+```
+The optimal choices are: { 2, 3 }.<br/>
+The total weight is 1 + 4 = 5.<br/>
+The total value is 10 + 30 = 40.
+
+---
+
+## Solution
+
+This problem shows that the parameters may not only change by
+a constant amount.
+
+### Subproblems
+
+The most important part of this solution, is to recognize
+that the parameters are interdependent.
+
+We can see that at a given point, for example, with $W$ capacity
+remaining, we have already decided on the items to take from the
+first $i$ items.
+
+From here, the optimal solution can be from the following previous
+subproblems:
+
+- With $W - w_i$ capacity remaining, we took the $i$-th item.
+- With $W - w_{i-1}$ capacity remaining, we took the $i - 1$-th item.
+- ... and so on.
+- With $W - w_2$ capacity remaining, we took the $2$-nd item.
+- With $W - w_1$ capacity remaining, we took the $1$-st item.
+- With $W$ capacity remaining, we didn't take any item at all.
+
+We can apply a dynamic programming technique to the subproblems,
+and know that the following part:
+
+- With $W - w_{i-1}$ capacity remaining, we took the $i - 1$-th item.
+- With $W - w_{i-2}$ capacity remaining, we took the $i - 2$-th item.
+- ... and so on.
+- With $W - w_2$ capacity remaining, we took the $2$-nd item.
+- With $W - w_1$ capacity remaining, we took the $1$-st item.
+- With $W$ capacity remaining, we didn't take any item at all.
+
+is the subproblems when we have $W$ capacity remaining and already
+decided on the items to take from the first $i - 1$ items, meaning
+we didn't take the $i$-th item.
+
+So the optimized subproblems are:
+
+- With $W - w_i$ capacity remaining, we took the $i$-th item.
+- With $W$ capacity remaining, we didn't take the $i$-th item.
+
+### Recurrence Relation
+
+The relation is simple, since we need the maximum value, we can
+take the one with the maximum value among all the subproblems.
+
+Let $f(i, W)$ be the maximum value we can get from the first $i$ items
+with a capacity of $W$:
+
+$$
+f(i, W) = \max \begin{cases}
+  f(i - 1, W - w_i) + v_i \\
+  f(i - 1, W)
+\end{cases}
+$$
+
+### Base Cases
+
+The base cases for this problem is when we have no items left, or
+when we have no capacity left.
+
+In both cases, we be able to take any item and allocate to the capacity,
+so the value is 0.
+
+$$
+\begin{aligned}
+f(0, W) &= 0 \\
+f(i, 0) &= 0
+\end{aligned}
+$$
+
+### Edge Cases
+
+Since we don't want the capacity to be negative, we need to exclude
+cases if the capacity will become negative (or return 0 since it is
+the smallest possible value).
+
+$$
+f(i, W) = \max \begin{cases}
+  f(i - 1, W - w_i) + v_i & \text{if } W - w_i \ge 0 \\
+  ...
+\end{cases}
+$$
+
+### Solving the Problem
+
+We can initialize the memoization array with 0, and skip the base
+cases in the loop.
+
+```pseudocode title="0-1 Knapsack Problem"
+function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
+    // problem size
+    let n = V.length
+
+    // initialize memoization array
+    let dp = [...] of size (n + 1, W + 1)
+             zero-based index
+             initialized to 0
+    
+    // calcualate values
+    for i from 1 to n:
+        for w from 1 to W:
+            if w - V[i].w >= 0:
+                dp[i][w] = max(dp[i - 1][w - V[i].w] + V[i].v, dp[i - 1][w])
+            else:
+                dp[i][w] = dp[i - 1][w]
+
+    return dp[n][W]
+}
+```
+
+Time Complexity: $O(nW)$
+
+Space Complexity: $O(nW)$
+
+***video***
+
+### Space Optimization
+
+Since we only need the previous item's values to calculate the next value,
+we can optimize the space by only using a 1D memoization array on the capacity.
+
+```pseudocode title="0-1 Knapsack Problem - Space Optimized"
+function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
+    // problem size
+    let n = V.length
+
+    // initialize memoization array
+    let dp = [...] of size (W + 1)
+             zero-based index
+             initialized to 0
+    
+    // calcualate values
+    for i from 1 to n:
+        for w from 1 to W:
+            if w - V[i].w >= 0:
+                dp[w] = max(dp[w - V[i].w] + V[i].v, dp[w])
+            else:
+                dp[w] = dp[w]
+
+    return dp[W]
+}
+```
+
+Time Complexity: $O(nW)$
+
+Space Complexity: $O(W)$
+
+***video***
+
+:::info Possibility of Optimizing to $O(n)$ Space Complexity
+
+We need to know which previous index value to take from the memoization
+array, and the relation between current and previous index value must be
+a constant for it to be optimizable.
+
+However, $w$ does not meet these requirements, so it is not possible
+to optimize out the $W$ in the space complexity.
+
+We can use it on $i$ because we know it only need the $i-1$ value,
+thus we are able to optimize out the $n$ in the space complexity.
+
+:::
+
+### Implementation

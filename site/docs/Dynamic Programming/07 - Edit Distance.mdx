@@ -32,13 +32,13 @@ Given:
 ### Testcases
 
 ```testcase
-Input: x = "horse", y = "ros"
+Input: x = "sunny", y = "snowy"
 Output: 3
 ```
 The operations are:
-1. horse -> rorse (replace 'h' with 'r')
-2. rorse -> rose (delete 'r')
-3. rose -> ros (delete 'e')
+1. sunny -> snny (delete 'u')
+2. snny -> snoy (replace 'n' with 'o')
+3. snoy -> snowy (insert 'w')
 
 ```testcase
 Input: x = "intention", y = "execution"
@@ -55,7 +55,7 @@ The operations are:
 
 ## Solution
 
-### Forming the Recurrence Relation
+### Subproblems
 
 The subproblems depends on what operation we 
 applied to the previous characters.
@@ -97,6 +97,8 @@ in fact we can choose to always apply operations to only
 one of the strings to match the others.
 
 :::
+
+### Recurrence Relation
 
 The relation is a bit more complicated in this problem,
 because we cannot apply no operation to the subproblem if 

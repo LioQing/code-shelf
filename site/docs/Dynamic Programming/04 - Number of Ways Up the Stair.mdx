@@ -49,7 +49,7 @@ There are three ways to climb to the top:
 
 ## Solution
 
-### Forming the Recurrence Relation
+### Subproblems
 
 At the $n$-th step, there are two ways to get to the $n$-th step:
 
@@ -58,6 +58,8 @@ At the $n$-th step, there are two ways to get to the $n$-th step:
 
 After we found that the $n$-th step depends on the $(n-1)$-th and $(n-2)$-th step, 
 we need to find the relationship between the $n$-th step and the $(n-1)$-th and $(n-2)$-th step.
+
+### Recurrence Relation
 
 We can see that the number of ways to get to the $n$-th step is the sum of the number of ways to get to the $(n-1)$-th and $(n-2)$-th step.
 In more general terms, the problem is the sum of the subproblems.

@@ -60,7 +60,7 @@ Output: 28
 
 ## Solution
 
-### Forming the Recurrence Relation
+### Subproblems
 
 Finding the subproblems should be straight forward. At any point in time,
 we can only move either down or right, so if we are at position $(m, n)$,
@@ -68,6 +68,8 @@ we can:
 
 1. Move from above $(m - 1, n)$.
 2. Move from left $(m, n - 1)$.
+
+### Recurrence Relation
 
 Similar to the number of ways up the stair problem, we are counting the
 number of ways to reach the bottom right corner. So, the relation is

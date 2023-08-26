@@ -55,7 +55,7 @@ The optimal path:
 
 ## Solution
 
-### Forming the Recurrence Relation
+### Subproblems
 
 At the $n$-th step, instead of focusing on the number of ways to reach the $n$-th step,
 we focus on the cost to reach the $n$-th step:
@@ -65,6 +65,8 @@ we focus on the cost to reach the $n$-th step:
 
 We see the subproblems is almost the same as the original problem,
 the only difference is the cost of taking the steps.
+
+### Recurrence Relation
 
 Since we want to minimize the cost, we want to take which ever costs less.
 In other words, we want to take the minimum of the two costs.
