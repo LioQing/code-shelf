@@ -39,12 +39,20 @@ const Table = ({ values, columnHeaders, rowHeaders, className, ...tableProps }: 
   // Props validation
   const colCount = columnHeaders ? columnHeaders.length : values[0].length;
   if (values.some(row => row.length !== colCount)) {
-    throw new Error('All rows must have the same number of columns');
+    const index = values.findIndex(row => row.length !== colCount);
+    const wrongColCount = values[index].length;
+    throw new Error(`
+      All rows must have the same number of columns:
+      row ${columnHeaders ? 'header' : '0'} has ${colCount}, row ${index} has ${wrongColCount} columns
+    `);
   }
 
   const rowCount = rowHeaders ? rowHeaders.length : values.length;
   if (values.length !== rowCount) {
-    throw new Error('All rows must have the same number of columns');
+    throw new Error(`
+      The number of row headers must match the number of rows:
+      ${rowCount} row headers, ${values.length} rows
+    `);
   }
 
   const classNames = className ? clsx(styles.table, className) : styles.table;

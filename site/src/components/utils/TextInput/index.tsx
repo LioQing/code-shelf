@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 
 export interface TextInputProps extends React.HTMLProps<HTMLInputElement> {
   state: TextInputState;
+  width?: string;
   subtitle?: string;
 }
 
@@ -19,7 +20,13 @@ const TextInput = (props: TextInputProps) => {
     <input
       type='text'
       {...props}
-      className={clsx(styles["text-input"], styles[props.state], styles["border"], props.className)}
+      style={{ width: props.width ?? '200px' }}
+      className={clsx(
+        styles["text-input"],
+        styles[props.state],
+        styles["border"],
+        props.className,
+      )}
     />
   );
 };
