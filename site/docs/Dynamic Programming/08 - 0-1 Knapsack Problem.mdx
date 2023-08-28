@@ -146,7 +146,10 @@ function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
     for i from 1 to n:
         for w from 1 to W:
             if w - V[i].w >= 0:
-                dp[i][w] = max(dp[i - 1][w - V[i].w] + V[i].v, dp[i - 1][w])
+                dp[i][w] = max(
+                    dp[i - 1][w - V[i].w] + V[i].v,
+                    dp[i - 1][w],
+                )
             else:
                 dp[i][w] = dp[i - 1][w]
 
@@ -179,7 +182,10 @@ function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
     for i from 1 to n:
         for w from 1 to W:
             if w - V[i].w >= 0:
-                dp[w] = max(dp[w - V[i].w] + V[i].v, dp[w])
+                dp[w] = max(
+                    dp[w - V[i].w] + V[i].v,
+                    dp[w],
+                )
             else:
                 dp[w] = dp[w]
 
@@ -208,3 +214,212 @@ thus we are able to optimize out the $n$ in the space complexity.
 :::
 
 ### Implementation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem value='python' label='Python'>
+
+To follow the Python naming convention, we will name $W$ as
+`capacity` and $V$ as `items`.
+
+`items` will be a list of `Item` objects:
+
+```python title="Item Class"
+class Item:
+    weight: int
+    value: float
+
+    def __init__(self, weight: int, value: float):
+        self.weight = weight
+        self.value = value
+```
+
+```python title="0-1 Knapsack Problem"
+def zeroOneKnapsack(capacity: int, items: list[Item]):
+    # the problem size
+    n = len(items)
+
+    # initialize memoization array
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    # calculate values
+    for i in range(1, n + 1):
+        for w in range(1, capacity + 1):
+            if w - items[i - 1].weight >= 0:
+                dp[i][w] = max(
+                    dp[i - 1][w - items[i - 1].weight] + items[i - 1].value,
+                    dp[i - 1][w],
+                )
+            else:
+                dp[i][w] = dp[i - 1][w]
+
+    return dp[n][capacity]
+```
+
+```python title="0-1 Knapsack Problem - Space Optimized"
+def zeroOneKnapsack(capacity: int, items: list[Item]):
+    # the problem size
+    n = len(items)
+
+    # initialize memoization array
+    dp = [0] * (capacity + 1)
+
+    # calculate values
+    for i in range(1, n + 1):
+        for w in range(capacity, 0, -1):
+            if w - items[i - 1].weight >= 0:
+                dp[w] = max(
+                    dp[w - items[i - 1].weight] + items[i - 1].value,
+                    dp[w],
+                )
+            else:
+                dp[w] = dp[w]
+
+    return dp[capacity]
+```
+
+</TabItem>
+
+<TabItem value='cpp' label='C++'>
+
+To follow the C++ naming convention, we will name $W$ as
+`capacity` and $V$ as `items`.
+
+`items` will be a `vector` of `Item` structs:
+
+```cpp title="Item Struct"
+struct Item {
+    int weight;
+    float value;
+};
+```
+
+```cpp title="0-1 Knapsack Problem"
+float zeroOneKnapsack(int capacity, std::vector<Item> items) {
+    // the problem size
+    int n = items.size();
+
+    // initialize memoization array
+    std::vector<std::vector<float>> dp(
+        n + 1,
+        std::vector<float>(capacity + 1, 0),
+    );
+
+    // calculate values
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= capacity; w++) {
+            if (w - items[i - 1].weight >= 0) {
+                dp[i][w] = std::max(
+                    dp[i - 1][w - items[i - 1].weight] + items[i - 1].value,
+                    dp[i - 1][w],
+                );
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    return dp[n][capacity];
+}
+```
+
+```cpp title="0-1 Knapsack Problem - Space Optimized"
+float zeroOneKnapsack(int capacity, std::vector<Item> items) {
+    // the problem size
+    int n = items.size();
+
+    // initialize memoization array
+    std::vector<float> dp(capacity + 1, 0);
+
+    // calculate values
+    for (int i = 1; i <= n; i++) {
+        for (int w = capacity; w >= 1; w--) {
+            if (w - items[i - 1].weight >= 0) {
+                dp[w] = std::max(
+                    dp[w - items[i - 1].weight] + items[i - 1].value,
+                    dp[w],
+                );
+            } else {
+                dp[w] = dp[w];
+            }
+        }
+    }
+
+    return dp[capacity];
+}
+```
+
+</TabItem>
+
+<TabItem value='rust' label='Rust'>
+
+To follow the Rust naming convention, we will name $W$ as
+`capacity` and $V$ as `items`.
+
+`items` will be a `Vec` of `Item` structs:
+
+```rust title="Item Struct"
+struct Item {
+    weight: usize,
+    value: f32,
+}
+```
+
+```rust title="0-1 Knapsack Problem"
+fn zero_one_knapsack(capacity: usize, items: Vec<Item>) -> f32 {
+    // the problem size
+    let n = items.len();
+
+    // initialize memoization array
+    let mut dp = vec![vec![0.0; capacity + 1]; n + 1];
+
+    // calculate values
+    for i in 1..=n {
+        for w in 1..=capacity {
+            if w >= items[i - 1].weight {
+                dp[i][w] = f32::max(
+                    dp[i - 1][w - items[i - 1].weight] + items[i - 1].value,
+                    dp[i - 1][w],
+                );
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    dp[n][capacity]
+}
+```
+
+```rust title="0-1 Knapsack Problem - Space Optimized"
+fn zero_one_knapsack(capacity: usize, items: Vec<Item>) -> f32 {
+    // the problem size
+    let n = items.len();
+
+    // initialize memoization array
+    let mut dp = vec![0.0; capacity + 1];
+
+    // calculate values
+    for i in 1..=n {
+        for w in (1..=capacity).rev() {
+            if w >= items[i - 1].weight {
+                dp[w] = f32::max(
+                    dp[w - items[i - 1].weight] + items[i - 1].value,
+                    dp[w],
+                );
+            } else {
+                dp[w] = dp[w];
+            }
+        }
+    }
+
+    dp[capacity]
+}
+```
+
+</TabItem>
+
+</Tabs>
