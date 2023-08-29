@@ -186,8 +186,13 @@ $\}$
 
 ### Space Optimization
 
-Since we only need the previous item's values to calculate the next value,
-we can optimize the space by only using a 1D memoization array on the capacity.
+Since we only need the previous item's values to calculate
+the next item's values, we can use a 1D array to store the
+values.
+
+However, since we may need the previous item's value at an
+unknown index, we need to use a temporary array to store the
+previous item's values.
 
 ```pseudocode title="0-1 Knapsack Problem - Space Optimized"
 function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
@@ -201,14 +206,16 @@ function zero_one_knapsack(W: int, V: (w: int, v: float)[]) {
     
     // calcualate values
     for i from 1 to n:
+        let prev_dp = dp
+
         for w from 1 to W:
             if w - V[i].w >= 0:
                 dp[w] = max(
-                    dp[w - V[i].w] + V[i].v,
-                    dp[w],
+                    prev_dp[w - V[i].w] + V[i].v,
+                    prev_dp[w],
                 )
             else:
-                dp[w] = dp[w]
+                dp[w] = prev_dp[w]
 
     return dp[W]
 }
@@ -290,14 +297,16 @@ def zeroOneKnapsack(capacity: int, items: list[Item]):
 
     # calculate values
     for i in range(1, n + 1):
+        prev_dp = dp.copy()
+
         for w in range(1, capacity + 1):
             if w - items[i - 1].weight >= 0:
                 dp[w] = max(
-                    dp[w - items[i - 1].weight] + items[i - 1].value,
-                    dp[w],
+                    prev_dp[w - items[i - 1].weight] + items[i - 1].value,
+                    prev_dp[w],
                 )
             else:
-                dp[w] = dp[w]
+                dp[w] = prev_dp[w]
 
     return dp[capacity]
 ```
@@ -319,7 +328,7 @@ struct Item {
 ```
 
 ```cpp title="0-1 Knapsack Problem"
-float zeroOneKnapsack(int capacity, std::vector<Item> items) {
+float zero_one_knapsack(int capacity, std::vector<Item> items) {
     // the problem size
     int n = items.size();
 
@@ -348,7 +357,7 @@ float zeroOneKnapsack(int capacity, std::vector<Item> items) {
 ```
 
 ```cpp title="0-1 Knapsack Problem - Space Optimized"
-float zeroOneKnapsack(int capacity, std::vector<Item> items) {
+float zero_one_knapsack(int capacity, std::vector<Item> items) {
     // the problem size
     int n = items.size();
 
@@ -357,14 +366,16 @@ float zeroOneKnapsack(int capacity, std::vector<Item> items) {
 
     // calculate values
     for (int i = 1; i <= n; i++) {
+        std::vector<float> prev_dp = dp;
+
         for (int w = 1; w <= capacity; w++) {
             if (w - items[i - 1].weight >= 0) {
                 dp[w] = std::max(
-                    dp[w - items[i - 1].weight] + items[i - 1].value,
-                    dp[w],
+                    prev_dp[w - items[i - 1].weight] + items[i - 1].value,
+                    prev_dp[w],
                 );
             } else {
-                dp[w] = dp[w];
+                dp[w] = prev_dp[w];
             }
         }
     }
@@ -425,14 +436,16 @@ fn zero_one_knapsack(capacity: usize, items: Vec<Item>) -> f32 {
 
     // calculate values
     for i in 1..=n {
+        let prev_dp = dp.clone();
+
         for w in 1..=capacity {
             if w >= items[i - 1].weight {
                 dp[w] = f32::max(
-                    dp[w - items[i - 1].weight] + items[i - 1].value,
-                    dp[w],
+                    prev_dp[w - items[i - 1].weight] + items[i - 1].value,
+                    prev_dp[w],
                 );
             } else {
-                dp[w] = dp[w];
+                dp[w] = prev_dp[w];
             }
         }
     }

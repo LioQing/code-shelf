@@ -47,19 +47,21 @@ const getPath = (
 ): [React.ReactElement[], React.ReactElement[][]] => {
   const path = JSON.parse(JSON.stringify(values));
   const choices = items.map((item, index) => <>{`(${item.weight}, ${item.value})`}</>);
-  let i = items.length;
   let w = capacity;
-  while (i > 0 && w > 0) {
+  for (let i = items.length; i > 0; i--) {
+    path[i][w] = <>{values[i][w]}</>;
+    path[i][w] = <b className={styles.path}>{path[i][w]}</b>;
+    path[i][w] = <span className={styles.path}>{path[i][w]}</span>;
     if (values[i][w] !== values[i - 1][w]) {
-      path[i][w] = <>{values[i][w]}</>;
-      path[i][w] = <b className={styles.path}>{path[i][w]}</b>;
-      path[i][w] = <span className={styles.path}>{path[i][w]}</span>;
+      path[i][w] = <u className={styles.path}>{path[i][w]}</u>;
       w -= items[i - 1].weight;
-
       choices[i - 1] = <b className={styles.path}>{choices[i - 1]}</b>;
     }
-    i--;
   }
+
+  path[0][0] = <>{values[0][0]}</>;
+  path[0][0] = <b className={styles.path}>{path[0][0]}</b>;
+  path[0][0] = <span className={styles.path}>{path[0][0]}</span>;
 
   return [[<></>, ...choices], path];
 };
@@ -99,8 +101,8 @@ const Dp08 = ({ children }: Dp08Props) => {
       />
       <div>
         <p>
-          Green bold values form a possible combination of
-          items to achieve the maximum value.
+          Green bold values form a combination of items to maximize the value of the knapsack,
+          and underlined values are where the items were taken.
         </p>
       </div>
     </>
