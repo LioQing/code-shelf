@@ -258,6 +258,32 @@ thus we are able to optimize out the $n$ in the space complexity.
 
 :::
 
+import MultipleChoice from '@site/src/components/utils/MultipleChoice';
+
+:::interactive Checkpoint
+
+<MultipleChoice
+    options={[
+        'There is no difference',
+        'Position of some subproblems depend on the value of the items',
+        'Position of some subproblems depend on the weight of the items',
+        'Items can be from any index on the previous row of the memoization array',
+    ]}
+    answer={1}
+    explanation='
+        The position of one of the subproblems depends on the weight of the items,
+        as the x-axis of the memoization array is the capacity, and the subproblem
+        is relate to the current problem by the weight of the item. This defines
+        the knapsack problem, compared to other dynamic programming problems.
+    '>
+
+What is the difference of the knapsack problem compared to other dynamic programming problems
+like edit distance and unique paths?
+
+</MultipleChoice>
+
+:::
+
 ### Implementation
 
 import Tabs from '@theme/Tabs';
