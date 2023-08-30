@@ -12,10 +12,9 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Go to site directory
         run: cd site
-        
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
