@@ -422,7 +422,7 @@ int edit_distance(const std::string& x, const std::string& y) {
     // initialize memoization array
     std::vector<std::vector<int>> dp(
         m + 1,
-        std::vector<int>(n + 1, 0),
+        std::vector<int>(n + 1, 0)
     );
 
     // calculate values
@@ -533,13 +533,11 @@ fn edit_distance(x: &str, y: &str) -> usize {
 
                 // recursive cases
                 (i, j) if x.as_bytes()[i - 1] == y.as_bytes()[j - 1] => dp[i - 1][j - 1],
-                (i, j) => 1 + std::cmp::min(
+                (i, j) => 1 + [
                     dp[i - 1][j],
-                    std::cmp::min(
-                        dp[i][j - 1],
-                        dp[i - 1][j - 1],
-                    ),
-                ),
+                    dp[i][j - 1],
+                    dp[i - 1][j - 1],
+                ].into_iter().min().unwrap(),
             };
         }
     }
@@ -576,13 +574,11 @@ fn edit_distance(x: &str, y: &str) -> usize {
 
                 // recursive cases
                 (i, j) if x.as_bytes()[i - 1] == y.as_bytes()[j - 1] => top_left,
-                (i, j) => 1 + std::cmp::min(
+                (i, j) => 1 + [
                     dp[j],
-                    std::cmp::min(
-                        dp[j - 1],
-                        top_left,
-                    ),
-                ),
+                    dp[j - 1],
+                    top_left,
+                ].into_iter().min().unwrap(),
             };
 
             // update the top left value

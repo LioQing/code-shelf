@@ -13,6 +13,11 @@ interface Item {
 
 const parseTextInputs = (textInputs: string[]): [number, Item[]] => {
   const [maxWeight, items] = textInputs;
+
+  if (items.trim() === '') {
+    return [parseInt(maxWeight), []];
+  }
+
   return [
     parseInt(maxWeight),
     items.replace(/\s/g, "").slice(1, -1).split('),(').map(item => {
@@ -73,7 +78,7 @@ const validate = (textInput: string, index: number): boolean => {
     return regex.test(textInput);
   } else if (index === 1) {
     // comma separated list of (integers, floats) (may have spaces)
-    const regex = /^\s*\(\s*\d+\s*,\s*[-+]?\d+(\.\d+)?\s*\)?\s*(,\s*\(\s*\d+\s*,\s*[-+]?\d+(\.\d+)?\s*\)\s*)*$/;
+    const regex = /^\s*(\(\s*\d+\s*,\s*[-+]?\d+(\.\d+)?\s*\)?\s*(,\s*\(\s*\d+\s*,\s*[-+]?\d+(\.\d+)?\s*\)\s*)*)?$/;
     return regex.test(textInput);
   } else {
     return false;

@@ -35,9 +35,17 @@ Given:
 Input: W = 5, V = { (2, 20), (1, 10), (4, 30), (3, 15) }
 Output: 40
 ```
-The optimal choices are: { 2, 3 }.<br/>
+The optimal choices are { 2, 3 }.<br/>
 The total weight is 1 + 4 = 5.<br/>
 The total value is 10 + 30 = 40.
+
+```testcase
+Input: W = 10, V = { (2, 10), (3, 15), (5, 20), (7, 30), (4, 12) }
+Output: 45
+```
+The optimal choices are { 1, 2, 3 } or { 1, 2, 4 }.<br/>
+The total weight is 3 + 7 = 10 or 2 + 3 + 5 = 10.<br/>
+The total value is 15 + 30 = 45 or 10 + 15 + 20 = 45.
 
 ---
 
@@ -45,6 +53,9 @@ The total value is 10 + 30 = 40.
 
 This problem shows that the parameters may not only change by
 a constant amount.
+
+And here the parameters does not only mean the parameter of
+the overall problem, but also the parameters of the subproblems.
 
 ### Subproblems
 
@@ -64,6 +75,9 @@ subproblems:
 - With $W - w_2$ capacity remaining, we took the $2$-nd item.
 - With $W - w_1$ capacity remaining, we took the $1$-st item.
 - With $W$ capacity remaining, we didn't take any item at all.
+
+We can see the subproblems may change depending on the weight $w_i$ of
+each item $i$.
 
 We can apply a dynamic programming technique to the subproblems,
 and know that the following part:
@@ -352,7 +366,7 @@ def zeroOneKnapsack(capacity: int, items: list[Item]):
             else:
                 dp[1][w] = dp[0][w]
 
-    return dp[capacity]
+    return dp[1][capacity]
 ```
 
 </TabItem>
@@ -372,6 +386,9 @@ struct Item {
 ```
 
 ```cpp title="0-1 Knapsack Problem"
+#include <vector>
+#include <algorithm>
+
 float zero_one_knapsack(int capacity, std::vector<Item> items) {
     // the problem size
     int n = items.size();
@@ -379,7 +396,7 @@ float zero_one_knapsack(int capacity, std::vector<Item> items) {
     // initialize memoization array
     std::vector<std::vector<float>> dp(
         n + 1,
-        std::vector<float>(capacity + 1, 0),
+        std::vector<float>(capacity + 1, 0)
     );
 
     // calculate values
@@ -388,7 +405,7 @@ float zero_one_knapsack(int capacity, std::vector<Item> items) {
             if (w - items[i - 1].weight >= 0) {
                 dp[i][w] = std::max(
                     dp[i - 1][w - items[i - 1].weight] + items[i - 1].value,
-                    dp[i - 1][w],
+                    dp[i - 1][w]
                 );
             } else {
                 dp[i][w] = dp[i - 1][w];
@@ -401,12 +418,18 @@ float zero_one_knapsack(int capacity, std::vector<Item> items) {
 ```
 
 ```cpp title="0-1 Knapsack Problem - Space Optimized"
+#include <vector>
+#include <algorithm>
+
 float zero_one_knapsack(int capacity, std::vector<Item> items) {
     // the problem size
     int n = items.size();
 
     // initialize memoization array
-    std::vector<float> dp(2, std::vector<float>(capacity + 1, 0));
+    std::vector<std::vector<float>> dp(
+        2,
+        std::vector<float>(capacity + 1, 0)
+    );
 
     // calculate values
     for (int i = 1; i <= n; i++) {
@@ -417,7 +440,7 @@ float zero_one_knapsack(int capacity, std::vector<Item> items) {
             if (w - items[i - 1].weight >= 0) {
                 dp[1][w] = std::max(
                     dp[0][w - items[i - 1].weight] + items[i - 1].value,
-                    dp[0][w],
+                    dp[0][w]
                 );
             } else {
                 dp[1][w] = dp[0][w];
@@ -425,7 +448,7 @@ float zero_one_knapsack(int capacity, std::vector<Item> items) {
         }
     }
 
-    return dp[capacity];
+    return dp[1][capacity];
 }
 ```
 
@@ -496,7 +519,7 @@ fn zero_one_knapsack(capacity: usize, items: Vec<Item>) -> f32 {
         }
     }
 
-    dp[capacity]
+    dp[1][capacity]
 }
 ```
 
