@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -19,6 +18,11 @@ const HomepageHeader = () => {
         <img src={LogoUrl} alt='logo' />
         <p>{siteConfig.tagline}</p>
       </div>
+      <Link
+        className="button button--outline button--secondary button--lg"
+        href="/docs/Welcome%20to%20Code%20Shelf">
+        Explore Topics
+      </Link>
     </header>
   );
 }
@@ -27,13 +31,13 @@ const HomepageIntro = () => {
   return (
     <section className={styles.intro}>
       <div className={styles.introContent}>
-        <h2>Introduction</h2>
+        <h2>About Us</h2>
         <p>
           This website is inspired from university lectures. It intends
           to guide you through programming and computer science concepts
-          and theories instead go straight into implementations like
+          and theories instead of going straight into implementations like
           typical online tutorials. By incorporating interactive elements
-          and visual aids, we hope to make learning abstract concepts
+          and visualizations, we hope to make learning abstract concepts
           more fun and engaging.
         </p>
       </div>
@@ -43,7 +47,7 @@ const HomepageIntro = () => {
 
 interface Feature {
   title: string;
-  icon: string;
+  icon: React.ReactElement;
   description: string;
 }
 

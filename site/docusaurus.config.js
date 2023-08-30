@@ -86,7 +86,7 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'sidebar',
             position: 'left',
-            label: 'Tutorials',
+            label: 'Topics',
           },
           {
             href: 'https://github.com/lioqing/code-shelf',
@@ -99,11 +99,11 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Featured Topics',
             items: [
               {
-                label: 'Tutorials',
-                to: '/docs/category/drafts',
+                label: 'Dynamic Programming',
+                to: '/docs/category/dynamic-programming',
               },
             ],
           },

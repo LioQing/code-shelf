@@ -17,6 +17,7 @@ article {
 
 .katex-html {
   margin: var(--my-multimedia-content-margin) 0px;
+  overflow-x: scroll;
 }
 
 /* You can override the default Infima variables here. */
@@ -52,9 +53,9 @@ article {
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #6cf5cf;
-  --ifm-color-primary-dark: #4bf3c4;
-  --ifm-color-primary-darker: #3af2bf;
-  --ifm-color-primary-darkest: #10e7ac;
+  --ifm-color-primary-dark: #32e7b4;
+  --ifm-color-primary-darker: #2dcd9f;
+  --ifm-color-primary-darkest: #3ac49d;
   --ifm-color-primary-light: #8df7da;
   --ifm-color-primary-lighter: #9ef8df;
   --ifm-color-primary-lightest: #cffcef;

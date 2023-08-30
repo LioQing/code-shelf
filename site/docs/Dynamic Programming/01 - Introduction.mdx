@@ -8,14 +8,14 @@ import VideoPlayer from '@site/src/components/utils/VideoPlayer';
   <title>Introduction | Dynamic Programming</title>
 </head>
 
-Dynamic programming is a algorithm design paradigm where the problems have optimal substructure and overlapping subproblems.
+Dynamic programming is an algorithm design paradigm where the problems have optimal substructure and overlapping subproblems.
 They have specific optimization techniques to solve them faster than usual.
 
 Fibonacci sequence is a good example of dynamic programming problem, 
 we will use it throughout this chapter and several following chapters 
 to explain the fundamental concepts of dynamic programming.
 
-Let $f(n)$ be the $n$-th Fibonacci number:
+Let $f(n)$ be the $n$-th Fibonacci number, and it is defined as follows:
 $$
 \begin{aligned}
 f(n) &= f(n-1) + f(n-2) \\
@@ -42,6 +42,8 @@ The first few Fibonacci numbers are:
 | $0$    | $1$    | $1$    | $2$    | $3$    | $5$    | $8$    | $13$   | $21$   | $34$   |
 
 ## Optimal Substructure & Overlapping Subproblems
+
+We will start by explaining the two properties of dynamic programming problems: optimal substructure and overlapping subproblems.
 
 Similar to divide and conquer, dynamic programming problems have optimal substructure, 
 but the difference is that in dynamic programming, the subproblems overlap.
