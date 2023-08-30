@@ -28,7 +28,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.PAGES_DEPLOY_KEY }}
-          publish_dir: ./build
-          # You can swap them out with your own user credentials.
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          publish_dir: ./site/build
