@@ -10,7 +10,7 @@ const katex = require('rehype-katex');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Code Shelf',
-  tagline: 'Understand the Code, Not Just Learn.',
+  tagline: 'Understand the Code, Not Just Code the Code.',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
