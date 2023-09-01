@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: "JetBrains Mono Regular";
-  src: url('/font/JetBrainsMono-Regular.ttf') format('ttf');
+  src: url('/static/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
 
 article {
