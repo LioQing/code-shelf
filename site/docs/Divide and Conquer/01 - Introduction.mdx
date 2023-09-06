@@ -8,4 +8,136 @@ import VideoPlayer from '@site/src/components/utils/VideoPlayer';
   <title>Introduction | Divide and Conquer</title>
 </head>
 
+Divide and Conquer is an algorithm design paradigm where the problem is
+divided into smaller subproblems until the subproblems are trivial to
+solve, then the solution of the subproblems are combined to give a
+solution to the original problem.
 
+Summation of all elements in an array is a good example of Divide and
+Conquer.
+
+Let $f(i, j)$ be the function that sums the elements between the 
+$i$-th and $j$-th elements (inclusive) in an array $X = [x_1, x_2, ..., x_n]$:
+
+$$
+f(i, j) = x_i + x_{i+1} + ... + x_{j-1} + x_j
+$$
+
+The sum of all elements in $X$ is $f(1, n)$.
+
+## Steps of Divide and Conquer
+
+Steps of divide and conquer is as follows:
+
+1. **Divide** the problem into smaller subproblems.
+2. **Conquer** the subproblems by solving them recursively.
+3. **Combine** the solutions of the subproblems to get the solution of the original problem.
+
+## Apply on Summation
+
+We can apply the steps of divide and conquer on the summation
+function we have defined above.
+
+We can see that summation of elements is the same as summation of the
+first half adds to the summation of the second half.
+
+By using this property, we can try to divide the problem into two halves,
+and then add them up.
+
+### Divide
+
+We can divide the problem into two halves by dividing the summation into
+two equal parts, by cutting them in the middle $\frac{i + k}{2}$
+
+$$
+f(i, j) = \left(x_i + x_{i+1} + ... + x_{\frac{i+j}{2}}\right) + \left(x_{\frac{i+j}{2}+1} + ... + x_{j-1} + x_j\right)
+$$
+
+### Conquer
+
+We can solve the subproblems by solving them recursively, by calling
+the summation function $f$ on the two halves.
+
+And let's name the solved first and second halves $f_1$ and $f_2$:
+
+$$
+\begin{aligned}
+f_1 &= f\left(i, \frac{i+j}{2}\right) \\
+f_2 &= f\left(\frac{i+j}{2}+1, j\right)
+\end{aligned}
+$$
+
+### Combine
+
+We can combine the solutions of the subproblems by adding them up:
+
+$$
+f(i, j) = f_1 + f_2
+$$
+
+### Conclusion
+
+This demonstrated the steps of divide and conquer on the summation
+function.
+
+We can see that the summation of all elements in an array can be solved
+by applying the steps of divide and conquer.
+
+:::info Strictness of Division
+
+We are going to define index division simply as floor division $\left\lfloor \frac{i + j}{2} \right\rfloor$
+throughout this topic for simplicity.
+
+:::
+
+## Advantages
+
+There are several advantages of divide and conquer, making it a very
+common algorithm design paradigm, below are some of them.
+
+### Efficiency
+
+Divide and conquer is usually very efficient in solving specific
+type of problems. For example, sorting algorithms that uses divide
+and conquer like Merge Sort and Quick Sort are very efficient in sorting large arrays.
+
+While the example of summation of all elements in an array done in divide and conquer
+does not have any time nor space complixity reduced compared to simply summing
+one by one from first to last. In some cases, divide and conquer can be a lot faster
+than the linear solution.
+
+### Parallelism
+
+Since divide and conquer divides the problem into smaller subproblems to
+be calculated independently, it is very easy to parallelize the
+algorithm.
+
+## Disadvantages
+
+There are also several disadvantages of divide and conquer.
+
+### Overhead
+
+Divide and conquer usually has overhead in dividing and combining the
+solutions of the subproblems.
+
+Recursive solutions may also lead to overhead in function calls.
+
+### Requires Independent Subproblems
+
+Divide and conquer requires the subproblems to be independent of each
+other, which is not always the case.
+
+Even if it is possible, the division of independent subproblems may be hard to identify.
+
+## Solutions
+
+Here are some notes about the solutions in this topic.
+
+### Steps
+
+We will follow the definitive 3 steps of divide and conquer in this topic.
+
+1. Divide
+2. Conquer
+3. Combine

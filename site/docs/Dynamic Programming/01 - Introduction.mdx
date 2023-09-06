@@ -8,8 +8,9 @@ import VideoPlayer from '@site/src/components/utils/VideoPlayer';
   <title>Introduction | Dynamic Programming</title>
 </head>
 
-Dynamic programming is an algorithm design paradigm where the problems have optimal substructure and overlapping subproblems.
-They have specific optimization techniques to solve them faster than usual.
+Dynamic programming is an algorithm design paradigm where the problems have
+optimal substructure and overlapping subproblems. They have specific
+optimization techniques to solve them faster than usual.
 
 Fibonacci sequence is a good example of dynamic programming problem, 
 we will use it throughout this chapter and several following chapters 
@@ -43,7 +44,8 @@ The first few Fibonacci numbers are:
 
 ## Optimal Substructure & Overlapping Subproblems
 
-We will start by explaining the two properties of dynamic programming problems: optimal substructure and overlapping subproblems.
+We will start by explaining the two properties of dynamic programming
+problems: optimal substructure and overlapping subproblems.
 
 Similar to divide and conquer, dynamic programming problems have optimal substructure, 
 but the difference is that in dynamic programming, the subproblems overlap.
@@ -62,12 +64,14 @@ so it has an optimal substructure.
 
 Optimal solution is the solution which maximizes efficiency or minimizes cost,
 while correct solution is the solution which satisfy the constraint of the problem. 
-However, we can use them interchangeably if the problem only has one solution or is already a maximization or minimization problem.
+However, we can use them interchangeably if the problem only has one solution or is
+already a maximization or minimization problem.
 
 :::
 
-For example, if we want to compute $f(4)$, we need to have the optimal solution for $f(3)$ and $f(2)$ first, which are $2$ and $1$, 
-then we can compute $f(4) = f(3) + f(2) = 2 + 1 = 3$ correctly.
+For example, if we want to compute $f(4)$, we need to have the optimal solution for
+$f(3)$ and $f(2)$ first, which are $2$ and $1$, then we can compute
+$f(4) = f(3) + f(2) = 2 + 1 = 3$ correctly.
 
 If instead we have the wrong values for a subproblem, let's say the $f(1)$ under $f(3)$ is miscalculated as $0$,
 then we will obtain the wrong value $f(3) = 1$ and leading to the wrong value $f(4) = 2$.
@@ -80,9 +84,11 @@ Optimal substructure shown in $f(4)$. Wrong value for $f(1)$ leading to wrong va
 
 ### Overlapping Subproblems
 
-A problem has overlapping subproblems if its subproblems are reused multiple times throughout the computation of the whole problem.
+A problem has overlapping subproblems if its subproblems are reused multiple times
+throughout the computation of the whole problem.
 
-In Fibonacci sequence, subproblems are reused multiple times. For example, if we expand $f(5)$, we can see that $f(2)$ is reused three times. 
+In Fibonacci sequence, subproblems are reused multiple times. For example, if we
+expand $f(5)$, we can see that $f(2)$ is reused three times. 
 Since $f(2) = f(1) + f(0)$, so we performed this addition three times in $f(5)$. 
 
 $$
@@ -126,7 +132,8 @@ If we have, we can just return the result without computing it again.
 In dynamic programming, bottom-up approach is a technique to start solving the problem from the base cases.
 It can also memoize the results of the subproblems as we go up the recursion tree. 
 
-On top of that, it can avoid the overhead of recursion, as function calls are more expensive than results stored in plain variables.
+On top of that, it can avoid the overhead of recursion, as function calls are more expensive
+than results stored in plain variables.
 
 In Fibonacci sequence, we can start from the base cases $f(0)$ and $f(1)$, 
 then compute the next Fibonacci number by using the previous two Fibonacci numbers.
@@ -138,17 +145,16 @@ Most of the time, we want to use the bottom-up approach to solve dynamic program
 
 Here are some notes about the solutions in this topic.
 
-### Pseudocode Syntax
+### Steps
 
-We will use the following type annotations for pseudocode:
+We will use a set of fixed steps to solve dynamic programming problems
+in this topic starting chapter 4 after introducing memoization and bottom-up approach:
 
-- `int`: integer
-- `float`: floating point number (or any number, really)
-- `bool`: boolean
-- `str`: string
-- `(<type1>, <type2>, ..., <typen>)`: tuple of `<type1>`, `<type2>`, ..., `<typen>`
-- `(<name1>: <type1>, <name2>: <type2>, ..., <namen>: <typen>)`: named tuple
-- `<type>[]`: array or list of `<type>`
+1. Identify the subproblems
+2. Find the recurrence relation
+3. Find the base case and edge case if any
+4. Solve the problem using pseudocode
+5. Simplify and Optimize the solution
 
 ### Implementations
 
