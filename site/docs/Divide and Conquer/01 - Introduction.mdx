@@ -31,7 +31,14 @@ Steps of divide and conquer is as follows:
 
 1. **Divide** the problem into smaller subproblems.
 2. **Conquer** the subproblems by solving them recursively.
+    - If the subproblems are small enough, solve them directly (base case).
 3. **Combine** the solutions of the subproblems to get the solution of the original problem.
+
+<VideoPlayer src={require('/video/dp/dac_01_01.mp4').default}>
+
+Visualization of the steps of divide and conquer, red and green represent unsolved and solved problem respectively.
+
+</VideoPlayer>
 
 ## Apply on Summation
 
@@ -136,8 +143,14 @@ Here are some notes about the solutions in this topic.
 
 ### Steps
 
-We will follow the definitive 3 steps of divide and conquer in this topic.
+We will follow the definitive 3 steps of divide and conquer in this topic
+to solve the problems starting chapter 3.
 
 1. Divide
 2. Conquer
 3. Combine
+
+### Time Complexity
+
+Since most of problems are solved recursively, Master Theorem will be
+introduced to calculate the time complexity of the solutions.
